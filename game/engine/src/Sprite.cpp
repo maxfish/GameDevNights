@@ -21,3 +21,8 @@ void Sprite::draw(Graphics &graphics) {
 //                                     (this->_sourceRect.h * globals::SPRITE_SCALE)};
 //    graphics.blitSurface(this->_spriteSheet, &this->_sourceRect, &destinationRectangle);
 }
+
+void Sprite::setPosition(int x, int y) {
+    this->_position.x = x;
+    this->_position.y = y;
+}

@@ -18,6 +18,8 @@ public:
 
     void draw(Graphics &graphics);
 
+    void setPosition(int x, int y);
+
 private:
     FramesStore _framesStore;
     SDL_Point _position;

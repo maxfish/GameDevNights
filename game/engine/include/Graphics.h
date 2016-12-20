@@ -11,7 +11,7 @@ class Graphics {
 
 public:
 
-    Graphics();
+    Graphics(int screen_width, int screen_height);
     ~Graphics();
 
     SDL_Surface* loadImage(const std::string &filePath);

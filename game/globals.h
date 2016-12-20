@@ -1,12 +1,9 @@
-//
-// Created by nathan on 1/14/16.
-//
-
 #pragma once
 
 namespace globals {
-    const int SCREEN_WIDTH = 600;
-    const int SCREEN_HEIGHT = 480;
+    const int SCREEN_WIDTH = 1200;
+    const int SCREEN_HEIGHT = 800;
 
-    const int SPRITE_SCALE = 2;
+    const int FPS = 50;
+    const int FRAME_TIME = 1000 / FPS;
 }

@@ -3,3 +3,9 @@
 //
 
 #include "Animation.h"
+
+Animation::Animation(const std::string &_animation_name) : _animation_name(_animation_name) {}
+
+Animation::~Animation() {
+
+}
