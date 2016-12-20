@@ -22,6 +22,11 @@ file(GLOB ENGINE_SRC engine/src/*.cpp)
 # Setup globals
 include_directories(.)
 
+# Add 3rd Parties
+include_directories(
+        third_parties/json
+)
+
 # Build library
 add_executable(GAME main.cpp ${ENGINE_SRC})
 target_link_libraries(GAME ${SDL2_LIBRARY}
