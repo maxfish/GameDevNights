@@ -4,14 +4,13 @@
 
 #pragma once
 
-
 #include <string>
 #include <list>
 #include "Frame.h"
 
 class Animation {
 public:
-    Animation(const std::string &_animation_name);
+    Animation();
 
     virtual ~Animation();
 

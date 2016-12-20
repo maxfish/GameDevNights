@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
 #include "game.h"
 #include "input.h"
-#include "../globals.h"
+#include "globals.h"
 
 Game::Game() {
     SDL_Init(SDL_INIT_EVERYTHING);

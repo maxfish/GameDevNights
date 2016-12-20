@@ -4,7 +4,10 @@
 
 #include "Animation.h"
 
-Animation::Animation(const std::string &_animation_name) : _animation_name(_animation_name) {}
+Animation::Animation() {
+//    this->_animation_name = "";
+//    this->_frames = std::list<Frame>();
+}
 
 Animation::~Animation() {
 
