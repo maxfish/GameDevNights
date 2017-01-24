@@ -10,6 +10,7 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
 include_directories(
+        /usr/local/include
         ${SDL2_INCLUDE_DIR}
         ${SDL2_IMAGE_INCLUDE_DIR}
         ${SDL2_TTF_INCLUDE_DIR}
@@ -18,6 +19,7 @@ include_directories(
 # Setup Engine
 include_directories(engine/include)
 file(GLOB ENGINE_SRC engine/src/*.cpp)
+file(GLOB ENGINE_INCLUDES engine/include/*.h)
 
 # Setup globals
 include_directories(.)
@@ -28,7 +30,7 @@ include_directories(
 )
 
 # Build library
-add_executable(GAME main.cpp ${ENGINE_SRC})
+add_executable(GAME main.cpp ${ENGINE_SRC} ${ENGINE_INCLUDES})
 target_link_libraries(GAME ${SDL2_LIBRARY}
         ${SDL2_IMAGE_LIBRARIES}
         ${SDL2_TTF_LIBRARIES})
