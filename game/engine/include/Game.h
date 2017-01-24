@@ -1,6 +1,8 @@
 #pragma once
 
+#include <vector>
 #include "sprite.h"
+#include "EventsManager.h"
 
 class Graphics;
 
@@ -14,5 +16,6 @@ private:
     void draw(Graphics &graphics);
     void update(float game_speed);
 
+    EventsManager *_eventsManager;
     Sprite _player;
 };

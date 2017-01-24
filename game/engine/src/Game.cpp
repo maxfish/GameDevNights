@@ -5,6 +5,7 @@
 
 Game::Game() {
     SDL_Init(SDL_INIT_EVERYTHING);
+    this->_eventsManager = new EventsManager();
     this->gameLoop();
 }
 
@@ -20,6 +21,8 @@ void Game::gameLoop() {
     FramesStore framesStore = FramesStore();
     this->_player = Sprite(framesStore);
 
+    SDL_Log("%d joystick[s] connected", SDL_NumJoysticks());
+
     auto game_speed = 1;
 
     while (true) {
@@ -28,6 +31,7 @@ void Game::gameLoop() {
         input.beginNewFrame();
 
         if (SDL_PollEvent(&event)) {
+            this->_eventsManager->add_frame_event(event);
             if (event.type == SDL_KEYDOWN) {
                 if (event.key.repeat == 0) {
                     input.keyDownEvent(event);
@@ -54,6 +58,7 @@ void Game::gameLoop() {
         } else {
             game_speed = elapsed_time / globals::FRAME_TIME;
         }
+        this->_eventsManager->clear_events();
     }
 }
 
