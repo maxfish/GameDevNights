@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <Joystick.h>
 #include "game.h"
 #include "input.h"
 #include "globals.h"
@@ -21,7 +22,9 @@ void Game::gameLoop() {
     FramesStore framesStore = FramesStore();
     this->_player = Sprite(framesStore);
 
-    SDL_Log("%d joystick[s] connected", SDL_NumJoysticks());
+//    SDL_Log("%d joystick[s] connected", SDL_NumJoysticks());
+    Joystick *joy = new Joystick();
+    joy->open(0);
 
     auto game_speed = 1;
 
@@ -31,7 +34,9 @@ void Game::gameLoop() {
         input.beginNewFrame();
 
         if (SDL_PollEvent(&event)) {
-            this->_eventsManager->add_frame_event(event);
+            _eventsManager->add_frame_event(event);
+            joy->process_frame_events(_eventsManager->get_frame_events());
+
             if (event.type == SDL_KEYDOWN) {
                 if (event.key.repeat == 0) {
                     input.keyDownEvent(event);

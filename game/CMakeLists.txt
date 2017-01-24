@@ -30,7 +30,7 @@ include_directories(
 )
 
 # Build library
-add_executable(GAME main.cpp ${ENGINE_SRC} ${ENGINE_INCLUDES} engine/include/EventsManager.h engine/src/EventsManager.cpp)
+add_executable(GAME main.cpp ${ENGINE_SRC} ${ENGINE_INCLUDES} engine/include/EventsManager.h engine/src/EventsManager.cpp engine/include/Joystick.h engine/src/Joystick.cpp)
 target_link_libraries(GAME ${SDL2_LIBRARY}
         ${SDL2_IMAGE_LIBRARIES}
         ${SDL2_TTF_LIBRARIES})

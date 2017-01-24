@@ -13,6 +13,7 @@ public:
     ~EventsManager();
     void add_frame_event(SDL_Event event);
     void clear_events();
+    const std::vector<SDL_Event> &get_frame_events() const;
 
 private:
     std::vector<SDL_Event> _frame_events;
