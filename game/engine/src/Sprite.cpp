@@ -1,3 +1,4 @@
+#include <globals.h>
 #include "sprite.h"
 
 Sprite::Sprite() {
@@ -13,13 +14,30 @@ Sprite::~Sprite() {
 }
 
 void Sprite::update(float game_speed) {
-
+    move(4, 0);
 }
 
 void Sprite::draw(Graphics &graphics) {
-//    SDL_Rect destinationRectangle = {x, y, (this->_sourceRect.w * globals::SPRITE_SCALE),
-//                                     (this->_sourceRect.h * globals::SPRITE_SCALE)};
-//    graphics.blitSurface(this->_spriteSheet, &this->_sourceRect, &destinationRectangle);
+    auto image = graphics.loadImage("resources/images/sprites/godzilla.png");
+    int width, height;
+    SDL_QueryTexture(image, NULL, NULL, &width, &height);
+
+    SDL_Rect destinationRectangle = {this->_position.x, this->_position.y, width, height};
+    SDL_Rect sourceRect = {0, 0, width, height};
+    graphics.blitTexture(image, &sourceRect, &destinationRectangle);
+    //graphics.blitTexture(image, NULL, NULL);
+}
+
+void Sprite::move(int x, int y) {
+    int new_x = this->_position.x + x;
+    if (new_x >= globals::SCREEN_WIDTH)
+        new_x -= globals::SCREEN_WIDTH;
+    int new_y = this->_position.y + y;
+    if (new_y >= globals::SCREEN_HEIGHT)
+        new_y -= globals::SCREEN_HEIGHT;
+
+    this->_position.x = new_x;
+    this->_position.y = new_y;
 }
 
 void Sprite::setPosition(int x, int y) {
