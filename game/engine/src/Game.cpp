@@ -21,6 +21,7 @@ void Game::gameLoop() {
     SDL_Event event;
     FramesStore framesStore = FramesStore();
     this->_player = Sprite(framesStore);
+    this->_player.setPosition(0, 100);
 
 //    SDL_Log("%d joystick[s] connected", SDL_NumJoysticks());
     Joystick *joy = new Joystick();
@@ -76,7 +77,6 @@ void Game::draw(Graphics &graphics) {
 }
 
 void Game::update(float game_speed) {
-    this->_player.setPosition(100, 100);
     this->_player.update(game_speed);
 }
 

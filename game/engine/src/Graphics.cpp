@@ -11,15 +11,17 @@ Graphics::~Graphics() {
     SDL_DestroyWindow(this->_window);
 }
 
-SDL_Surface *Graphics::loadImage(const std::string &filePath) {
+SDL_Texture *Graphics::loadImage(const std::string &filePath) {
     if (this->_spriteSheets.count(filePath) == 0) {
-        this->_spriteSheets[filePath] = IMG_Load(filePath.c_str());
+        auto surface = IMG_Load(filePath.c_str());
+        this->_spriteSheets[filePath] = SDL_CreateTextureFromSurface(this->_renderer, surface);
+        SDL_FreeSurface(surface);
     }
 
     return this->_spriteSheets[filePath];
 }
 
-void Graphics::blitSurface(SDL_Texture *texture, SDL_Rect *sourceRectangle,
+void Graphics::blitTexture(SDL_Texture *texture, SDL_Rect *sourceRectangle,
                            SDL_Rect *destinationRectangle) {
 
     SDL_RenderCopy(this->_renderer, texture, sourceRectangle, destinationRectangle);
@@ -32,8 +34,13 @@ void Graphics::flip() {
 
 void Graphics::clear() {
     SDL_RenderClear(this->_renderer);
+    SDL_SetRenderDrawColor(this->_renderer, 168, 230, 255, 255);
 }
 
 SDL_Renderer *Graphics::getRenderer() const {
     return this->_renderer;
+}
+
+SDL_Window *Graphics::getWindow() const {
+    return this->_window;
 }
