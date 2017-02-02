@@ -21,6 +21,11 @@ include_directories(engine/include)
 file(GLOB ENGINE_SRC engine/src/*.cpp)
 file(GLOB ENGINE_INCLUDES engine/include/*.h)
 
+# Setup Game
+include_directories(game/include)
+file(GLOB GAME_SRC game/src/*.cpp)
+file(GLOB GAME_INCLUDES game/include/*.h)
+
 # Setup globals
 include_directories(.)
 
@@ -30,7 +35,7 @@ include_directories(
 )
 
 # Build library
-add_executable(GAME main.cpp ${ENGINE_SRC} ${ENGINE_INCLUDES} engine/include/EventsManager.h engine/src/EventsManager.cpp engine/include/Joystick.h engine/src/Joystick.cpp)
+add_executable(GAME main.cpp ${ENGINE_SRC} ${ENGINE_INCLUDES} ${GAME_SRC} ${GAME_INCLUDES})
 target_link_libraries(GAME ${SDL2_LIBRARY}
         ${SDL2_IMAGE_LIBRARIES}
         ${SDL2_TTF_LIBRARIES})
