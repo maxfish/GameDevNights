@@ -1,15 +1,16 @@
 #include <SDL2/SDL.h>
 #include <Joystick.h>
 #include <fstream>
+#include <InputControler.h>
 #include "game/include/Game.h"
-#include "Input.h"
+#include "Keyboard.h"
 #include "globals.h"
 
 Game::Game() {
     SDL_Init(SDL_INIT_EVERYTHING);
     this->_eventsManager = new EventsManager();
 
-    std::ifstream file("res/date.json");
+//    std::ifstream file("res/date.json");
 
     this->gameLoop();
 }
@@ -20,16 +21,14 @@ Game::~Game() {
 
 void Game::gameLoop() {
     Graphics graphics = Graphics(globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT);
-    Input input;
+    Keyboard input;
 
     SDL_Event event;
     FramesStore framesStore = FramesStore();
     this->_player = Sprite(framesStore);
     this->_player.setPosition(0, 100);
 
-//    SDL_Log("%d joystick[s] connected", SDL_NumJoysticks());
-    Joystick *joy = new Joystick();
-    joy->open(0);
+    InputController *inputController = new InputController();
 
     auto game_speed = 1;
 
@@ -40,7 +39,7 @@ void Game::gameLoop() {
 
         if (SDL_PollEvent(&event)) {
             _eventsManager->add_frame_event(event);
-            joy->process_frame_events(_eventsManager->get_frame_events());
+            inputController->process_event(event);
 
             if (event.type == SDL_KEYDOWN) {
                 if (event.key.repeat == 0) {
