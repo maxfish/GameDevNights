@@ -67,9 +67,9 @@ void Joystick::process_event(const SDL_Event &event) {
             // handle axis motion
             break;
         }
-        case SDL_JOYBUTTONDOWN:
         case SDL_CONTROLLERBUTTONDOWN:
         case SDL_CONTROLLERBUTTONUP: {
+            // TODO: Buttons handling
             SDL_Log("------");
             break;
         }
