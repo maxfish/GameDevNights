@@ -10,9 +10,13 @@
 class EventsManager {
 public:
     EventsManager();
+
     ~EventsManager();
+
     void add_frame_event(SDL_Event event);
+
     void clear_events();
+
     const std::vector<SDL_Event> &get_frame_events() const;
 
 private:

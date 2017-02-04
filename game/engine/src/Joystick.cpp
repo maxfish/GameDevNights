@@ -73,7 +73,8 @@ void Joystick::process_event(const SDL_Event &event) {
             SDL_Log("------");
             break;
         }
-        default:break;
+        default:
+            break;
     }
 }
 

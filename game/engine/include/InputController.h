@@ -18,6 +18,7 @@ public:
     ~InputController();
 
     void process_frame_events(const std::vector<SDL_Event> frame_events);
+
     void process_event(const SDL_Event &event);
 
     int num_joysticks_connected();

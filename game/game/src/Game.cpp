@@ -1,6 +1,4 @@
 #include <SDL2/SDL.h>
-#include <Joystick.h>
-#include <fstream>
 #include <InputController.h>
 #include "game/include/Game.h"
 #include "Keyboard.h"

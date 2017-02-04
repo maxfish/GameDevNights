@@ -20,7 +20,7 @@ public:
     FramesStore();
 
 private:
-    std::map<std::string, SDL_Surface*> _images;
+    std::map<std::string, SDL_Surface *> _images;
     std::map<std::string, Frame> _frames;
     std::map<std::string, Animation> _animations;
 };

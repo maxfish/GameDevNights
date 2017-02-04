@@ -1,6 +1,5 @@
 #include "graphics.h"
 #include <SDL2/SDL_image.h>
-#include "globals.h"
 
 Graphics::Graphics(int screen_width, int screen_height) {
     SDL_CreateWindowAndRenderer(screen_width, screen_height, 0, &this->_window, &this->_renderer);
