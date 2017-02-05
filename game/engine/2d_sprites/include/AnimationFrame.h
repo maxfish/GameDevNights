@@ -8,9 +8,17 @@
 
 class AnimationFrame {
 public:
-    AnimationFrame(const std::string &_frame_name);
+    AnimationFrame(nlohmann::json frame_json);
 
     virtual ~AnimationFrame();
+
+    int getDelay();
+
+    std::string getFrameName();
+
+    bool getFlipX();
+
+    bool getFlipY();
 
 private:
     std::string _frame_name;

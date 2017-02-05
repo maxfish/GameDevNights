@@ -9,7 +9,7 @@
 
 class Player : public Entity {
 public:
-    Player();
+    Player(Graphics &graphics);
 
     void update(float gameSpeed) override;
 

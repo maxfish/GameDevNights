@@ -5,16 +5,19 @@
 #pragma once
 
 #include <string>
-#include <list>
-#include "Frame.h"
+#include <third_parties/json/json.hpp>
+#include <engine/2d_sprites/include/AnimationFrame.h>
 
 class Animation {
 public:
-    Animation();
+    Animation(std::string animation_name, nlohmann::json animation_json);
 
-    virtual ~Animation();
+    ~Animation();
+
+    AnimationFrame* getFrame(unsigned int frame_index);
+    int getFramesCount();
 
 private:
     std::string _animation_name;
-    std::list<Frame> _frames;
+    std::vector<AnimationFrame *> _frames;
 };

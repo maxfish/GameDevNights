@@ -5,25 +5,30 @@
 #pragma once
 
 #include <string>
-#include <SDL_surface.h>
+#include <SDL_Image.h>
+#include <third_parties/json/json.hpp>
 
 
 class Frame {
 public:
-    Frame();
+    Frame(std::string frame_name, nlohmann::json frame_json, SDL_Texture* frame_image);
 
     virtual ~Frame();
 
-    const SDL_Rect &get_rect() const;
+    const SDL_Rect getRect();
 
-    const SDL_Rect &get_hit_box() const;
+    const SDL_Rect getHitBox();
 
-    const SDL_Rect &get_attack_box() const;
+    const SDL_Rect getAttackBox();
+
+    const SDL_Point getAnchor();
+
+    SDL_Texture* getImage();
 
 private:
     std::string _frame_name;
     std::string _image_file;
-    SDL_Surface *_image;
+    SDL_Texture *_image;
 
     SDL_Point _anchor;
     SDL_Rect _rect;

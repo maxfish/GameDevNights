@@ -7,9 +7,6 @@
 Game::Game() {
     SDL_Init(SDL_INIT_EVERYTHING);
     this->_eventsManager = new EventsManager();
-
-//    std::ifstream file("res/date.json");
-
     this->gameLoop();
 }
 
@@ -22,8 +19,7 @@ void Game::gameLoop() {
     Keyboard input;
 
     SDL_Event event;
-    FramesStore framesStore = FramesStore();
-    _player = new Player();
+    _player = new Player(graphics);
     _player->setPosition(0, 100);
 
     InputController *inputController = new InputController();

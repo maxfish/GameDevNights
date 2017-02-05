@@ -5,12 +5,15 @@
 #include <globals.h>
 #include "Player.h"
 
-Player::Player() {
+Player::Player(Graphics &graphics) {
     Entity();
-    _sprite = new Sprite();
 
-    _framesStore = new FramesStore;
-    _framesStore->load("resources/sprites/cody/sprites.json");
+    _framesStore = new FramesStore(graphics);
+    _framesStore->load("resources/sprites/cody", "sprites.json");
+
+    _sprite = new Sprite(_framesStore);
+    _sprite->playAnimation("walk", Sprite::FLAG_LOOP_ANIMATION);
+    _sprite->setPosition(140,120);
 }
 
 void Player::update(float gameSpeed) {
@@ -25,6 +28,7 @@ void Player::update(float gameSpeed) {
 
     this->_position.x = new_x;
     this->_position.y = new_y;
+    _sprite->update(gameSpeed);
 }
 
 void Player::draw(Graphics &graphics) {
@@ -35,5 +39,7 @@ void Player::draw(Graphics &graphics) {
     SDL_Rect sourceRect = {0, 0, width, height};
     SDL_Rect destinationRectangle = {_position.x, _position.y, width, height};
     graphics.blitTexture(image, &sourceRect, &destinationRectangle);
+
+    _sprite->draw(graphics);
 }
 
