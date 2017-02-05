@@ -12,14 +12,15 @@ Graphics::~Graphics() {
 
 SDL_Texture *Graphics::loadImage(const std::string &filePath) {
     if (_textures.count(filePath) == 0) {
-        auto surface = IMG_Load(filePath.c_str());
+        auto surface = IMG_LoadTexture(_renderer, filePath.c_str());
         if (surface == nullptr) {
             SDL_Log("Cannot load image '%s'!", filePath.c_str());
         } else {
             SDL_Log("Image '%s' loaded.", filePath.c_str());
         }
-        _textures[filePath] = SDL_CreateTextureFromSurface(_renderer, surface);
-        SDL_FreeSurface(surface);
+        _textures[filePath] = surface;
+//                SDL_CreateTextureFromSurface(_renderer, surface);
+//        SDL_FreeSurface(surface);
     }
 
     return _textures[filePath];
