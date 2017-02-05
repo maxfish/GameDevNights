@@ -3,7 +3,7 @@
 //
 
 #include <SDL2/SDL.h>
-#include <EventsManager.h>
+#include <engine/core/include/EventsManager.h>
 
 EventsManager::EventsManager() {
     this->_frame_events = {};

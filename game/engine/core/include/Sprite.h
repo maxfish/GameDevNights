@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graphics.h"
+#include "Graphics.h"
 #include "FramesStore.h"
 #include "Frame.h"
 #include "Animation.h"

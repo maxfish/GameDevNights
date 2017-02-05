@@ -1,5 +1,5 @@
 #include <globals.h>
-#include "sprite.h"
+#include <engine/core/include/Sprite.h>
 
 Sprite::Sprite() {
 }
@@ -18,14 +18,13 @@ void Sprite::update(float game_speed) {
 }
 
 void Sprite::draw(Graphics &graphics) {
-    auto image = graphics.loadImage("resources/images/sprites/godzilla.png");
+    auto image = graphics.loadImage("resources/images/sprites/boy.png");
     int width, height;
     SDL_QueryTexture(image, NULL, NULL, &width, &height);
 
-    SDL_Rect destinationRectangle = {this->_position.x, this->_position.y, width, height};
     SDL_Rect sourceRect = {0, 0, width, height};
+    SDL_Rect destinationRectangle = {this->_position.x, this->_position.y, width, height};
     graphics.blitTexture(image, &sourceRect, &destinationRectangle);
-    //graphics.blitTexture(image, NULL, NULL);
 }
 
 void Sprite::move(int x, int y) {

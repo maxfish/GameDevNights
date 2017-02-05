@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
-#include <InputController.h>
+#include <engine/input/include/InputController.h>
 #include "game/include/Game.h"
-#include "Keyboard.h"
+#include "engine/input/include/Keyboard.h"
 #include "globals.h"
 
 Game::Game() {
@@ -18,7 +18,7 @@ Game::~Game() {
 }
 
 void Game::gameLoop() {
-    Graphics graphics = Graphics(globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT);
+    Graphics graphics = Graphics("Game", globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT);
     Keyboard input;
 
     SDL_Event event;
@@ -70,7 +70,7 @@ void Game::gameLoop() {
 }
 
 void Game::draw(Graphics &graphics) {
-    graphics.clear();
+    graphics.clear(40, 150, 70, 255);
 
     this->_player.draw(graphics);
 

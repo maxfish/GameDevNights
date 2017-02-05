@@ -1,8 +1,8 @@
 #pragma once
 
 #include <vector>
-#include "Sprite.h"
-#include "EventsManager.h"
+#include <engine/core/include/EventsManager.h>
+#include <engine/core/include/Sprite.h>
 
 class Graphics;
 

@@ -17,9 +17,8 @@ include_directories(
 )
 
 # Setup Engine
-include_directories(engine/include)
-file(GLOB ENGINE_SRC engine/src/*.cpp)
-file(GLOB ENGINE_INCLUDES engine/include/*.h)
+file(GLOB_RECURSE ENGINE_SRC "engine/*.cpp")
+file(GLOB_RECURSE ENGINE_INCLUDE "engine/*.h")
 
 # Setup Game
 include_directories(game/include)

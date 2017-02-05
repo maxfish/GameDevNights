@@ -1,5 +1,5 @@
 //
-// Created by max on 24/01/17.
+// Created by Massimiliano Pesce on 24/01/17.
 //
 
 #pragma once

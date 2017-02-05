@@ -3,7 +3,7 @@
 //
 
 #include <SDL_events.h>
-#include <Joystick.h>
+#include <engine/input/include/Joystick.h>
 #include <SDL_log.h>
 
 Joystick::~Joystick() {

@@ -3,7 +3,7 @@
 //
 
 
-#include <InputController.h>
+#include <engine/input/include/InputController.h>
 #include <SDL_log.h>
 
 InputController::InputController() {

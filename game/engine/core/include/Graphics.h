@@ -11,7 +11,7 @@ class Graphics {
 
 public:
 
-    Graphics(int screen_width, int screen_height);
+    Graphics(const char* window_title, int screen_width, int screen_height);
 
     ~Graphics();
 
@@ -22,7 +22,7 @@ public:
 
     void flip();
 
-    void clear();
+    void clear(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha);
 
     SDL_Renderer *getRenderer() const;
 
@@ -32,8 +32,7 @@ private:
     SDL_Window *_window;
     SDL_Renderer *_renderer;
 
-    std::map<std::string, SDL_Texture *> _spriteSheets;
-
+    std::map<std::string, SDL_Texture *> _textures;
 };
 
 

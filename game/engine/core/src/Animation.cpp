@@ -2,7 +2,7 @@
 // Created by Massimiliano Pesce on 09/12/2016.
 //
 
-#include "Animation.h"
+#include <engine/core/include/Animation.h>
 
 Animation::Animation() {
 //    this->_animation_name = "";
