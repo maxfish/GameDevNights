@@ -93,8 +93,8 @@ void FramesStore::drawFrame(Graphics &graphics, Frame &frame, int dest_x, int de
     src_rect.y = y1;
     src_rect.w = w;
     src_rect.h = h;
-//    graphics.blitTexture(frame.getImage(), &src_rect, &dest_rect);
-    SDL_Point center_pos;
+
+    SDL_Point center_pos = frame.getAnchor();
     float angle = 0;
     SDL_RenderCopyEx(graphics.getRenderer(),
                      frame.getImage(),
