@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <engine/core/include/Sprite.h>
+#include <engine/2d_sprites/include/Sprite.h>
 
 class Player {
 

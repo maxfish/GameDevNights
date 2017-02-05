@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graphics.h"
+#include "engine/core/include/Graphics.h"
 #include "FramesStore.h"
 #include "Frame.h"
 #include "Animation.h"

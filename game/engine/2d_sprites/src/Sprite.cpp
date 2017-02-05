@@ -1,5 +1,5 @@
 #include <globals.h>
-#include <engine/core/include/Sprite.h>
+#include <engine/2d_sprites/include/Sprite.h>
 
 Sprite::Sprite() {
 }

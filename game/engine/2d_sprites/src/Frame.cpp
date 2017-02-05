@@ -2,7 +2,7 @@
 // Created by Massimiliano Pesce on 07/12/2016.
 //
 
-#include <engine/core/include/Frame.h>
+#include <engine/2d_sprites/include/Frame.h>
 
 Frame::Frame() {}
 

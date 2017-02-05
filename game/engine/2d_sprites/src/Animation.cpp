@@ -2,7 +2,7 @@
 // Created by Massimiliano Pesce on 09/12/2016.
 //
 
-#include <engine/core/include/Animation.h>
+#include <engine/2d_sprites/include/Animation.h>
 
 Animation::Animation() {
 //    this->_animation_name = "";

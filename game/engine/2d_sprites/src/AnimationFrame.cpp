@@ -3,7 +3,7 @@
 //
 
 #include <string>
-#include "engine/core/include/AnimationFrame.h"
+#include "engine/2d_sprites/include/AnimationFrame.h"
 
 AnimationFrame::AnimationFrame(const std::string &_frame_name) : _frame_name(_frame_name) {}
 
