@@ -19,8 +19,6 @@ SDL_Texture *Graphics::loadImage(const std::string &filePath) {
             SDL_Log("Image '%s' loaded.", filePath.c_str());
         }
         _textures[filePath] = surface;
-//                SDL_CreateTextureFromSurface(_renderer, surface);
-//        SDL_FreeSurface(surface);
     }
 
     return _textures[filePath];
