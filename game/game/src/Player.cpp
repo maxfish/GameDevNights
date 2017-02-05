@@ -8,6 +8,9 @@
 Player::Player() {
     Entity();
     _sprite = new Sprite();
+
+    _framesStore = new FramesStore;
+    _framesStore->load("resources/sprites/cody/sprites.json");
 }
 
 void Player::update(float gameSpeed) {
@@ -25,7 +28,7 @@ void Player::update(float gameSpeed) {
 }
 
 void Player::draw(Graphics &graphics) {
-    auto image = graphics.loadImage("resources/images/sprites/boy.png");
+    auto image = graphics.loadImage("resources/images/boy.png");
     int width, height;
     SDL_QueryTexture(image, NULL, NULL, &width, &height);
 

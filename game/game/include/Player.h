@@ -16,5 +16,6 @@ public:
     void draw(Graphics &graphics) override;
 
 private:
+    FramesStore *_framesStore;
     Sprite *_sprite;
 };

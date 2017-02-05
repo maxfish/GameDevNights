@@ -5,7 +5,7 @@
 #pragma once
 
 #include <map>
-#include <SDL_surface.h>
+#include <SDL_Image.h>
 #include "Frame.h"
 #include "Animation.h"
 
@@ -19,8 +19,10 @@ public:
 
     FramesStore();
 
+    void load(std::string file_path);
+
 private:
-    std::map<std::string, SDL_Surface *> _images;
+    std::map<std::string, SDL_Texture *> _images;
     std::map<std::string, Frame> _frames;
     std::map<std::string, Animation> _animations;
 };
