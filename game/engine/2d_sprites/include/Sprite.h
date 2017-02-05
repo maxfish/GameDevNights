@@ -19,8 +19,6 @@ public:
 
     void draw(Graphics &graphics);
 
-    void move(int x, int y);
-
     void setPosition(int x, int y);
 
 private:

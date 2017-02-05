@@ -5,9 +5,16 @@
 #pragma once
 
 #include <engine/2d_sprites/include/Sprite.h>
+#include <engine/entities/include/Entity.h>
 
-class Player {
+class Player : public Entity {
+public:
+    Player();
+
+    void update(float gameSpeed) override;
+
+    void draw(Graphics &graphics) override;
 
 private:
-    Sprite _sprite;
+    Sprite *_sprite;
 };

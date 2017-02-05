@@ -23,8 +23,8 @@ void Game::gameLoop() {
 
     SDL_Event event;
     FramesStore framesStore = FramesStore();
-    this->_player = Sprite(framesStore);
-    this->_player.setPosition(0, 100);
+    _player = new Player();
+    _player->setPosition(0, 100);
 
     InputController *inputController = new InputController();
 
@@ -72,12 +72,12 @@ void Game::gameLoop() {
 void Game::draw(Graphics &graphics) {
     graphics.clear(40, 150, 70, 255);
 
-    this->_player.draw(graphics);
+    _player->draw(graphics);
 
     graphics.flip();
 }
 
 void Game::update(float game_speed) {
-    this->_player.update(game_speed);
+    _player->update(game_speed);
 }
 

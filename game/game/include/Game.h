@@ -3,6 +3,7 @@
 #include <vector>
 #include <engine/core/include/EventsManager.h>
 #include <engine/2d_sprites/include/Sprite.h>
+#include "Player.h"
 
 class Graphics;
 
@@ -20,5 +21,5 @@ private:
     void update(float game_speed);
 
     EventsManager *_eventsManager;
-    Sprite _player;
+    Player *_player;
 };
