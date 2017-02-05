@@ -69,12 +69,12 @@ void FramesStore::drawFrame(Graphics &graphics, Frame &frame, int dest_x, int de
     bool flip_x = false;
     bool flip_y = false;
 
-    if ((flags & Sprite::FLAG_FLIP_X) >0) {
-        anchor_x = w -anchor_x;
+    if ((flags & Sprite::FLAG_FLIP_X) > 0) {
+        anchor_x = w - anchor_x;
         flip_x = true;
     }
-    if ((flags & Sprite::FLAG_FLIP_Y) >0) {
-        anchor_y = h -anchor_y;
+    if ((flags & Sprite::FLAG_FLIP_Y) > 0) {
+        anchor_y = h - anchor_y;
         flip_y = true;
     }
 
@@ -83,15 +83,25 @@ void FramesStore::drawFrame(Graphics &graphics, Frame &frame, int dest_x, int de
 
 //        image_to_draw = pygame.transform.flip(frame.image, flip_x, flip_y)
 //        # g.drawImage(img, xPos, yPos, xPos + w, yPos + h, x1, y1, x2, y2, null);
-    SDL_Rect source_rect;
-    source_rect.x =x_pos;
-    source_rect.y = y_pos;
-    source_rect.w = w;
-    source_rect.h = h;
     SDL_Rect dest_rect;
-    dest_rect.x =x1;
-    dest_rect.y = y1;
+    dest_rect.x = x_pos;
+    dest_rect.y = y_pos;
     dest_rect.w = w;
     dest_rect.h = h;
-    graphics.blitTexture(frame.getImage(), &dest_rect, &source_rect);
+    SDL_Rect src_rect;
+    src_rect.x = x1;
+    src_rect.y = y1;
+    src_rect.w = w;
+    src_rect.h = h;
+//    graphics.blitTexture(frame.getImage(), &src_rect, &dest_rect);
+    SDL_Point center_pos;
+    float angle = 0;
+    SDL_RenderCopyEx(graphics.getRenderer(),
+                     frame.getImage(),
+                     &src_rect,
+                     &dest_rect,
+                     angle,
+                     &center_pos,
+                     (flip_x ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE)
+    );
 }

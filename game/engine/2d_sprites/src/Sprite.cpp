@@ -53,7 +53,7 @@ void Sprite::draw(Graphics &graphics) {
     int dest_y = _position.y; // TODO: window offset
 
     _framesStore->drawFrame(graphics, *_frame, dest_x, dest_y, flags);
-//
+
 //        # DEBUG boxes
 //        if Sprite.DEBUG:
 //            if self.hit_box and self.hit_box.w > 0 and self.hit_box.h > 0:
