@@ -81,8 +81,6 @@ void FramesStore::drawFrame(Graphics &graphics, Frame &frame, int dest_x, int de
     int x_pos = dest_x - anchor_x;
     int y_pos = dest_y - anchor_y;
 
-//        image_to_draw = pygame.transform.flip(frame.image, flip_x, flip_y)
-//        # g.drawImage(img, xPos, yPos, xPos + w, yPos + h, x1, y1, x2, y2, null);
     SDL_Rect dest_rect;
     dest_rect.x = x_pos;
     dest_rect.y = y_pos;
