@@ -7,7 +7,9 @@
 #include <SDL_log.h>
 
 InputController::InputController() {
-
+    for (int i=0; i<MAX_JOYSTICKS; i++) {
+        _joysticks[i] = new Joystick();
+    }
 }
 
 InputController::~InputController() {
@@ -15,8 +17,15 @@ InputController::~InputController() {
 }
 
 void InputController::process_frame_events(const std::vector<SDL_Event> frame_events) {
+    // TODO: We need to use an event filter to optimize this
     for (SDL_Event event : frame_events) {
         process_event(event);
+    }
+
+    for (Joystick *joystick : _joysticks) {
+        if (joystick->is_connected()) {
+            joystick->process_frame_events(frame_events);
+        }
     }
 }
 
@@ -27,10 +36,10 @@ void InputController::process_event(const SDL_Event &event) {
             // This assumes that the joystick is a valid game controller and that init is successful
             int controller_index = event.cdevice.which;
             if (controller_index < MAX_JOYSTICKS) {
-                Joystick &joystick = joysticks[controller_index];
-                joystick.open(event.cdevice.which);
-                SDL_Log("Connected joystick <%u> at index #%d.", joystick.get_joystick_id(), controller_index);
-                num_joysticks++;
+                Joystick *joystick = _joysticks[controller_index];
+                joystick->open(event.cdevice.which);
+                SDL_Log("Connected joystick <%u> at index #%d.", joystick->get_joystick_id(), controller_index);
+                _num_joysticks++;
             } else {
                 SDL_Log("Too many joysticks connected. Max num allowed is %u", MAX_JOYSTICKS);
             }
@@ -47,28 +56,7 @@ void InputController::process_event(const SDL_Event &event) {
                 // TEMP: This happens with the XBox360 Driver for OSX. Joysticks' indices are shuffled during hot-plugging
                 SDL_Log("Couldn't find an index for joystick <%d>.", joystick_id);
             }
-            num_joysticks--;
-            break;
-        }
-//            case SDL_CONTROLLERDEVICEREMAPPED: {
-//                // TODO: Remap doesn't work
-//                SDL_JoystickID joystick_id = event.cdevice.which;
-//                SDL_Log("Remapped joystick <%d>.", joystick_id);
-//                break;
-//            }
-
-        case SDL_CONTROLLERBUTTONDOWN:
-        case SDL_CONTROLLERBUTTONUP: {
-            SDL_JoystickID joystick_id = event.cdevice.which;
-            SDL_LogDebug(1, "Event for joystick %d", joystick_id);
-            Joystick *joystick = get_joystick_from_id(joystick_id);
-            if (joystick != nullptr) {
-                if (joystick->is_connected()) {
-                    joystick->process_event(event);
-                }
-            } else {
-                SDL_Log("Joystick <%d> not found.", joystick_id);
-            }
+            _num_joysticks--;
             break;
         }
         default:
@@ -78,14 +66,24 @@ void InputController::process_event(const SDL_Event &event) {
 
 Joystick *InputController::get_joystick_from_id(SDL_JoystickID joystick_id) {
     for (int i = 0; i < MAX_JOYSTICKS; i++) {
-        Joystick joystick = joysticks[i];
-        if (joystick.is_connected() && joystick.get_joystick_id() == joystick_id) {
-            return &joysticks[i];
+        Joystick *joystick = _joysticks[i];
+        if (joystick->is_connected() && joystick->get_joystick_id() == joystick_id) {
+            return joystick;
         }
     }
     return nullptr;
 }
 
+Joystick *InputController::getJoystickFromIndex(int joystick_index) {
+    Joystick *joystick = _joysticks[joystick_index];
+    if (joystick->is_connected()) {
+        return _joysticks[joystick_index];
+    } else {
+        SDL_Log("Joystick #%d <%p> not initialized.", joystick_index, &joystick);
+        return nullptr;
+    }
+}
+
 int InputController::num_joysticks_connected() {
-    return num_joysticks;
+    return _num_joysticks;
 }

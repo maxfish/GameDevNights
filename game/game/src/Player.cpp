@@ -5,41 +5,36 @@
 #include <globals.h>
 #include "Player.h"
 
-Player::Player(Graphics &graphics) {
+Player::Player(Graphics &graphics, InputController *inputController, int joystick_index) {
     Entity();
 
     _framesStore = new FramesStore(graphics);
     _framesStore->load("resources/sprites/cody", "sprites.json");
+
+    _inputController = inputController;
+    _joystick_index = joystick_index;
 
     _sprite = new Sprite(_framesStore);
     _sprite->playAnimation("walk", Sprite::FLAG_LOOP_ANIMATION);
     _sprite->setPosition(140,120);
 }
 
-void Player::update(float gameSpeed) {
-    int x =4;
-    int y =0;
-    int new_x = this->_position.x + x;
-    if (new_x >= globals::SCREEN_WIDTH)
-        new_x -= globals::SCREEN_WIDTH;
-    int new_y = this->_position.y + y;
-    if (new_y >= globals::SCREEN_HEIGHT)
-        new_y -= globals::SCREEN_HEIGHT;
+void Player::handleInput(float game_speed) {
+    Joystick *j = _inputController->getJoystickFromIndex(_joystick_index);
+    if (!j) {
+        return;
+    }
+    if(j->isButtonDown(SDL_CONTROLLER_BUTTON_DPAD_RIGHT)) {
+        _position.x += 5 * game_speed;
+    }
+}
 
-    this->_position.x = new_x;
-    this->_position.y = new_y;
+void Player::update(float gameSpeed) {
+    _sprite->setPosition(_position.x, _position.y);
     _sprite->update(gameSpeed);
 }
 
 void Player::draw(Graphics &graphics) {
-    auto image = graphics.loadImage("resources/images/boy.png");
-    int width, height;
-    SDL_QueryTexture(image, NULL, NULL, &width, &height);
-
-    SDL_Rect sourceRect = {0, 0, width, height};
-    SDL_Rect destinationRectangle = {_position.x, _position.y, width, height};
-    graphics.blitTexture(image, &sourceRect, &destinationRectangle);
-
     _sprite->draw(graphics);
 }
 

@@ -17,12 +17,12 @@ Game::~Game() {
 void Game::gameLoop() {
     Graphics graphics = Graphics("Game", globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT);
     Keyboard input;
-
     SDL_Event event;
-    _player = new Player(graphics);
-    _player->setPosition(0, 100);
 
     InputController *inputController = new InputController();
+
+    _player = new Player(graphics, inputController, 0);
+    _player->setPosition(-70, 100);
 
     auto game_speed = 1.0f;
 
@@ -32,9 +32,6 @@ void Game::gameLoop() {
         input.beginNewFrame();
 
         if (SDL_PollEvent(&event)) {
-            _eventsManager->add_frame_event(event);
-            inputController->process_event(event);
-
             if (event.type == SDL_KEYDOWN) {
                 if (event.key.repeat == 0) {
                     input.keyDownEvent(event);
@@ -45,8 +42,13 @@ void Game::gameLoop() {
             }//if the user hits the exit button
             else if (event.type == SDL_QUIT) {
                 return;
+            } else {
+                _eventsManager->add_frame_event(event);
             }
         }
+
+        inputController->process_frame_events(_eventsManager->get_frame_events());
+
         if (input.wasKeyPressed(SDL_SCANCODE_ESCAPE)) {
             return;
         }
@@ -74,6 +76,7 @@ void Game::draw(Graphics &graphics) {
 }
 
 void Game::update(float game_speed) {
+    _player->handleInput(game_speed);
     _player->update(game_speed);
 }
 

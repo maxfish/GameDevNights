@@ -19,14 +19,15 @@ public:
 
     void process_frame_events(const std::vector<SDL_Event> frame_events);
 
-    void process_event(const SDL_Event &event);
-
     int num_joysticks_connected();
 
     Joystick *get_joystick_from_id(SDL_JoystickID joystick_id);
 
+    Joystick *getJoystickFromIndex(int joystick_index);
 
 private:
-    int num_joysticks;
-    Joystick joysticks[MAX_JOYSTICKS];
+    int _num_joysticks;
+    Joystick *_joysticks[MAX_JOYSTICKS];
+
+    void process_event(const SDL_Event &event);
 };

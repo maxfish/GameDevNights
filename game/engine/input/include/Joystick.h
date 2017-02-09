@@ -8,9 +8,11 @@
 #include <vector>
 #include <SDL_haptic.h>
 
+const int MAX_BUTTONS = 24;
+
 class Joystick {
 public:
-    Joystick() : _connected(false), _sdl_controller(nullptr), _sdl_joystick_id(-1), _sdl_haptic(nullptr) {}
+    Joystick();
 
     ~Joystick();
 
@@ -20,11 +22,13 @@ public:
 
     bool is_connected();
 
+    bool isButtonPressed(SDL_GameControllerButton button_id);
+    bool isButtonDown(SDL_GameControllerButton button_id);
+    bool isButtonReleased(SDL_GameControllerButton button_id);
+
     SDL_JoystickID get_joystick_id();
 
     void process_frame_events(const std::vector<SDL_Event> frame_events);
-
-    void process_event(const SDL_Event &event);
 
 private:
     bool _connected;
@@ -32,4 +36,10 @@ private:
     SDL_Joystick *_sdl_joystick;
     SDL_JoystickID _sdl_joystick_id;
     SDL_Haptic *_sdl_haptic;
+
+    bool _buttonPressed[MAX_BUTTONS];
+    bool _buttonReleased[MAX_BUTTONS];
+    bool _buttonDown[MAX_BUTTONS];
+
+    void _process_event(const SDL_Event &event);
 };

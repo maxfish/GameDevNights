@@ -6,6 +6,13 @@
 #include <engine/input/include/Joystick.h>
 #include <SDL_log.h>
 
+Joystick::Joystick() {
+    _connected = false;
+    _sdl_controller = nullptr;
+    _sdl_joystick_id = -1;
+    _sdl_haptic = nullptr;
+}
+
 Joystick::~Joystick() {
 
 }
@@ -14,7 +21,6 @@ void Joystick::open(int device_index) {
     _sdl_controller = SDL_GameControllerOpen(device_index);
     _sdl_joystick = SDL_GameControllerGetJoystick(_sdl_controller);
     _sdl_joystick_id = SDL_JoystickInstanceID(_sdl_joystick);
-    _connected = true;
 
     //TODO: handle errors here
 
@@ -39,6 +45,11 @@ void Joystick::open(int device_index) {
             _sdl_haptic = nullptr;
         }
     }
+
+    memset(_buttonPressed, 0, sizeof _buttonPressed);
+    memset(_buttonDown, 0, sizeof _buttonDown);
+    memset(_buttonReleased, 0, sizeof _buttonReleased);
+    _connected = true;
 }
 
 void Joystick::close() {
@@ -59,17 +70,41 @@ bool Joystick::is_connected() {
     return _connected;
 }
 
+bool Joystick::isButtonPressed(SDL_GameControllerButton button_id) {
+    if (button_id < 0) {
+        return false;
+    }
+    return _buttonPressed[button_id];
+}
+
+bool Joystick::isButtonDown(SDL_GameControllerButton button_id) {
+    if (button_id < 0) {
+        return false;
+    }
+    return _buttonDown[button_id];
+}
+
+bool Joystick::isButtonReleased(SDL_GameControllerButton button_id) {
+    if (button_id < 0) {
+        return false;
+    }
+    return _buttonReleased[button_id];
+}
+
 SDL_JoystickID Joystick::get_joystick_id() {
     return _sdl_joystick_id;
 }
 
 void Joystick::process_frame_events(const std::vector<SDL_Event> frame_events) {
+    memset(_buttonPressed, 0, sizeof _buttonPressed);
+    memset(_buttonReleased, 0, sizeof _buttonReleased);
+
     for (SDL_Event event : frame_events) {
-        process_event(event);
+        _process_event(event);
     }
 }
 
-void Joystick::process_event(const SDL_Event &event) {
+void Joystick::_process_event(const SDL_Event &event) {
     switch (event.type) {
         case SDL_CONTROLLERAXISMOTION: {
             // handle axis motion
@@ -77,8 +112,23 @@ void Joystick::process_event(const SDL_Event &event) {
         }
         case SDL_CONTROLLERBUTTONDOWN:
         case SDL_CONTROLLERBUTTONUP: {
-            // TODO: Buttons handling
-            SDL_Log("------");
+            if (event.cbutton.which == _sdl_joystick_id) {
+                SDL_GameControllerButton button_id = (SDL_GameControllerButton) event.cbutton.button;
+                if (button_id < 0) {
+                    SDL_Log("Button not recognized/mapped");
+                    break;
+                }
+
+                if (event.type == SDL_CONTROLLERBUTTONDOWN) {
+                    SDL_Log("Button <%d> pressed", button_id);
+                    _buttonPressed[button_id] = true;
+                    _buttonDown[button_id] = true;
+                } else if (event.type == SDL_CONTROLLERBUTTONUP) {
+                    SDL_Log("Button <%d> released", button_id);
+                    _buttonReleased[button_id] = true;
+                    _buttonDown[button_id] = false;
+                }
+            }
             break;
         }
         default:
