@@ -18,9 +18,10 @@ void Joystick::open(int device_index) {
 
     //TODO: handle errors here
 
-    SDL_Log("Opened Joystick %i name:'%s' axes:%d btns:%d balls:%d",
+    SDL_Log("Opened Joystick %i name:'%s' axes:%d btns:%d balls:%d mapping:%s",
             device_index, SDL_JoystickName(_sdl_joystick), SDL_JoystickNumAxes(_sdl_joystick),
-            SDL_JoystickNumButtons(_sdl_joystick), SDL_JoystickNumBalls(_sdl_joystick)
+            SDL_JoystickNumButtons(_sdl_joystick), SDL_JoystickNumBalls(_sdl_joystick),
+            SDL_GameControllerMapping(_sdl_controller) ? "available" : "missing"
     );
 
     if (SDL_JoystickIsHaptic(_sdl_joystick)) {
