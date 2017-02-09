@@ -16,6 +16,13 @@ void Joystick::open(int device_index) {
     _sdl_joystick_id = SDL_JoystickInstanceID(_sdl_joystick);
     _connected = true;
 
+    //TODO: handle errors here
+
+    SDL_Log("Opened Joystick %i name:'%s' axes:%d btns:%d balls:%d",
+            device_index, SDL_JoystickName(_sdl_joystick), SDL_JoystickNumAxes(_sdl_joystick),
+            SDL_JoystickNumButtons(_sdl_joystick), SDL_JoystickNumBalls(_sdl_joystick)
+    );
+
     if (SDL_JoystickIsHaptic(_sdl_joystick)) {
         _sdl_haptic = SDL_HapticOpenFromJoystick(_sdl_joystick);
 //        SDL_Log("Joystick> Haptic Effects: %d\n", SDL_HapticNumEffects(_sdl_haptic));
