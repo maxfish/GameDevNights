@@ -24,7 +24,7 @@ void Game::gameLoop() {
 
     InputController *inputController = new InputController();
 
-    auto game_speed = 1;
+    auto game_speed = 1.0f;
 
     while (true) {
         auto start_time = SDL_GetTicks();
@@ -57,9 +57,9 @@ void Game::gameLoop() {
         auto elapsed_time = SDL_GetTicks() - start_time;
         if (elapsed_time < globals::FRAME_TIME) {
             SDL_Delay(globals::FRAME_TIME - elapsed_time);
-            game_speed = 1;
+            game_speed = 1.0f;
         } else {
-            game_speed = elapsed_time / globals::FRAME_TIME;
+            game_speed = elapsed_time / float(globals::FRAME_TIME);
         }
         this->_eventsManager->clear_events();
     }
