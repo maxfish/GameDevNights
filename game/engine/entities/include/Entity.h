@@ -20,5 +20,4 @@ public:
 protected:
 
     SDL_Point _position;
-    Sprite *_sprite;
 };
