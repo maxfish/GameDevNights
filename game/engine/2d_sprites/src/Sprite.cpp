@@ -4,6 +4,7 @@ Sprite::Sprite(FramesStore *frames_store) {
     _frames_store = frames_store;
     _position.x = _position.y = 0;
     _flags = 0;
+    _alpha = SDL_ALPHA_OPAQUE;
 
     _attack_box = SDL_Rect();
     _hit_box = SDL_Rect();
@@ -14,6 +15,8 @@ Sprite::Sprite(FramesStore *frames_store) {
     _animation_frame_index = 0;
     _animation_frame_delay = 0;
     _animating = false;
+
+    _blink_enabled = false;
 }
 
 Sprite::~Sprite() {
