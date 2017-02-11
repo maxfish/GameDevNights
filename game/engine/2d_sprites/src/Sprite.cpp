@@ -30,7 +30,7 @@ void Sprite::update(float game_speed) {
         nextAnimationFrame();
         return;
     } else {
-        _animation_frame_delay -=game_speed;
+        _animation_frame_delay -= game_speed;
     }
 }
 
@@ -116,8 +116,6 @@ void Sprite::skipToLastAnimationFrame() {
 }
 
 void Sprite::updateCollisionBoxes() {
-//    def _update_collision_boxes(self):
-//        # NOTE: this crashes when there is no animation running
 //        # TODO: flip_y should be handled as well
 //        animation_frame = self.animation.frames[self.animation_frame_index]
 //        flip_x = ((self.flags & FramesStore.FLAG_FLIP_X) > 0) ^ animation_frame.flip_x

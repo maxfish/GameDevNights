@@ -22,9 +22,10 @@ void Game::gameLoop() {
     InputController *inputController = new InputController();
 
     _player = new Player(graphics, inputController, 0);
-    _player->setPosition(-70, 100);
+    _player->setPosition(100, 100);
 
-    auto game_speed = 1.0f;
+    long time_accumulator = 0;
+    float game_speed = 1.0f;
 
     while (true) {
         auto start_time = SDL_GetTicks();
@@ -54,15 +55,16 @@ void Game::gameLoop() {
         }
 
         this->update(game_speed);
-        this->draw(graphics);
 
-        auto elapsed_time = SDL_GetTicks() - start_time;
-        if (elapsed_time < globals::FRAME_TIME) {
-            SDL_Delay(globals::FRAME_TIME - elapsed_time);
-            game_speed = 1.0f;
-        } else {
-            game_speed = elapsed_time / float(globals::FRAME_TIME);
+        long elapsed_time = SDL_GetTicks() - start_time;
+        time_accumulator += elapsed_time;
+        game_speed = elapsed_time / float(globals::FRAME_TIME);
+
+        if (time_accumulator >= globals::FRAME_TIME) {
+            time_accumulator = 0;
+            this->draw(graphics);
         }
+
         this->_eventsManager->clear_events();
     }
 }

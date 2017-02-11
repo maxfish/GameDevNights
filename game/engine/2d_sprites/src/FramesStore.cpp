@@ -17,6 +17,9 @@ void FramesStore::load(std::string file_path, std::string file_name) {
         return;
     }
 
+    std::map<std::string, nlohmann::json> meta_data_map = json["meta"];
+    _fps = Utils::intFromJsonField(meta_data_map, "fps", DEFAULT_FPS);
+
     std::map<std::string, nlohmann::json> animations_map = json["animations"];
     for (auto entry : animations_map) {
         std::string animation_name = entry.first;

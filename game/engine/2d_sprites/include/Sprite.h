@@ -39,7 +39,7 @@ private:
     Animation *_animation;
     std::string _animation_name;
     Uint8 _animation_frame_index;
-    Uint8 _animation_frame_delay;
+    float _animation_frame_delay;
     bool _animating;
 
     void setAnimationFrame(Uint8 frame_index);

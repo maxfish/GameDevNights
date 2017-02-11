@@ -15,9 +15,9 @@ public:
 
     virtual void draw(Graphics &graphics);
 
-    virtual void setPosition(int x, int y);
+    virtual void setPosition(float x, float y);
 
 protected:
-
-    SDL_Point _position;
+    float _position_x;
+    float _position_y;
 };

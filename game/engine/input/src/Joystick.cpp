@@ -5,6 +5,7 @@
 #include <SDL_events.h>
 #include <engine/input/include/Joystick.h>
 #include <SDL_log.h>
+#include <cmath>
 
 Joystick::Joystick() {
     _connected = false;
@@ -46,6 +47,7 @@ void Joystick::open(int device_index) {
         }
     }
 
+    memset(_axis, 0, sizeof _axis);
     memset(_buttonPressed, 0, sizeof _buttonPressed);
     memset(_buttonDown, 0, sizeof _buttonDown);
     memset(_buttonReleased, 0, sizeof _buttonReleased);
@@ -70,22 +72,29 @@ bool Joystick::is_connected() {
     return _connected;
 }
 
+float Joystick::getAxisValue(SDL_GameControllerAxis axis_id) {
+    if (axis_id == SDL_CONTROLLER_AXIS_INVALID) {
+        return 0;
+    }
+    return _axis[axis_id];
+}
+
 bool Joystick::isButtonPressed(SDL_GameControllerButton button_id) {
-    if (button_id < 0) {
+    if (button_id == SDL_CONTROLLER_BUTTON_INVALID) {
         return false;
     }
     return _buttonPressed[button_id];
 }
 
 bool Joystick::isButtonDown(SDL_GameControllerButton button_id) {
-    if (button_id < 0) {
+    if (button_id == SDL_CONTROLLER_BUTTON_INVALID) {
         return false;
     }
     return _buttonDown[button_id];
 }
 
 bool Joystick::isButtonReleased(SDL_GameControllerButton button_id) {
-    if (button_id < 0) {
+    if (button_id == SDL_CONTROLLER_BUTTON_INVALID) {
         return false;
     }
     return _buttonReleased[button_id];
@@ -107,7 +116,15 @@ void Joystick::process_frame_events(const std::vector<SDL_Event> frame_events) {
 void Joystick::_process_event(const SDL_Event &event) {
     switch (event.type) {
         case SDL_CONTROLLERAXISMOTION: {
-            // handle axis motion
+            if (event.caxis.which == _sdl_joystick_id) {
+                Uint8 axis_index = event.caxis.axis;
+                float axis_value = event.caxis.value;
+                if (std::abs(axis_value) < AXIS_DEAD_ZONE) {
+                    axis_value = 0;
+                }
+                _axis[axis_index] = axis_value > 0 ? axis_value / AXIS_MAX_VALUE : -axis_value / AXIS_MIN_VALUE;
+//                SDL_Log("<%d> %f %d", axis_index, _axis[axis_index], event.caxis.value);
+            }
             break;
         }
         case SDL_CONTROLLERBUTTONDOWN:
@@ -120,11 +137,11 @@ void Joystick::_process_event(const SDL_Event &event) {
                 }
 
                 if (event.type == SDL_CONTROLLERBUTTONDOWN) {
-                    SDL_Log("Button <%d> pressed", button_id);
+//                    SDL_Log("Button <%d> pressed", button_id);
                     _buttonPressed[button_id] = true;
                     _buttonDown[button_id] = true;
                 } else if (event.type == SDL_CONTROLLERBUTTONUP) {
-                    SDL_Log("Button <%d> released", button_id);
+//                    SDL_Log("Button <%d> released", button_id);
                     _buttonReleased[button_id] = true;
                     _buttonDown[button_id] = false;
                 }

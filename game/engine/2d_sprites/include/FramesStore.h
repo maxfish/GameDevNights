@@ -12,14 +12,10 @@
 
 class FramesStore {
 public:
+    static const int DEFAULT_FPS = 25;
     static const int FLAG_FLIP_X = 1;
     static const int FLAG_FLIP_Y = 2;
     static const int FLAG_LOOP_ANIMATION = 16;
-//    FLAG_FLIP_X = 1
-//    FLAG_FLIP_Y = 2
-//    FLAG_CENTER_X = 4
-//    FLAG_CENTER_Y = 8
-//    FLAG_LOOP_ANIMATION = 16
 
     FramesStore(Graphics &graphics);
 
@@ -35,6 +31,9 @@ public:
 
 private:
     Graphics *_graphics;
+
+    int _fps;
+
     std::map<std::string, SDL_Texture *> _images;
     std::map<std::string, Frame *> _frames;
     std::map<std::string, Animation *> _animations;

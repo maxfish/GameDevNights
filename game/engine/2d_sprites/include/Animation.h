@@ -8,13 +8,15 @@
 #include <third_parties/json/json.hpp>
 #include <engine/2d_sprites/include/AnimationFrame.h>
 
+
 class Animation {
 public:
     Animation(std::string animation_name, nlohmann::json animation_json);
 
     ~Animation();
 
-    AnimationFrame* getFrame(unsigned int frame_index);
+    AnimationFrame *getFrame(unsigned int frame_index);
+
     int getFramesCount();
 
 private:

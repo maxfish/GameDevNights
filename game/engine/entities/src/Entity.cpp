@@ -7,9 +7,9 @@
 Entity::Entity() {
 }
 
-void Entity::setPosition(int x, int y) {
-    _position.x = x;
-    _position.y = y;
+void Entity::setPosition(float x, float y) {
+    _position_x = x;
+    _position_y = y;
 }
 
 void Entity::update(float game_speed) {

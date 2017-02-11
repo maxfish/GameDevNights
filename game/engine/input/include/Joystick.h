@@ -9,6 +9,10 @@
 #include <SDL_haptic.h>
 
 const int MAX_BUTTONS = 24;
+const int MAX_AXIS = 8;
+const int AXIS_DEAD_ZONE = 3200;
+const int AXIS_MIN_VALUE = -32768;
+const int AXIS_MAX_VALUE = 32767;
 
 class Joystick {
 public:
@@ -22,6 +26,7 @@ public:
 
     bool is_connected();
 
+    float getAxisValue(SDL_GameControllerAxis axis_id);
     bool isButtonPressed(SDL_GameControllerButton button_id);
     bool isButtonDown(SDL_GameControllerButton button_id);
     bool isButtonReleased(SDL_GameControllerButton button_id);
@@ -37,6 +42,7 @@ private:
     SDL_JoystickID _sdl_joystick_id;
     SDL_Haptic *_sdl_haptic;
 
+    float _axis[MAX_AXIS];
     bool _buttonPressed[MAX_BUTTONS];
     bool _buttonReleased[MAX_BUTTONS];
     bool _buttonDown[MAX_BUTTONS];

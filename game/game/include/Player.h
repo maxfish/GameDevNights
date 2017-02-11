@@ -9,7 +9,11 @@
 #include <engine/input/include/Joystick.h>
 #include <engine/input/include/InputController.h>
 
+
 class Player : public Entity {
+    static const int DIR_LEFT = -1;
+    static const int DIR_RIGHT = 1;
+
 public:
     Player(Graphics &graphics, InputController *inputController, int joystick_index);
 
@@ -20,8 +24,11 @@ public:
     void draw(Graphics &graphics) override;
 
 private:
+    int _direction;
+
     FramesStore *_framesStore;
     Sprite *_sprite;
+
     InputController *_inputController;
     int _joystick_index;
 };
