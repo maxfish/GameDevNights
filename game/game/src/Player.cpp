@@ -37,7 +37,7 @@ void Player::handleInput(float game_speed) {
         _direction = DIR_RIGHT;
     }
 
-    Uint16 flags = (Uint16) (FramesStore::FLAG_LOOP_ANIMATION | (_direction == DIR_LEFT ? FramesStore::FLAG_FLIP_X : 0));
+    Uint16 flags = (Uint16) (Sprite::FLAG_LOOP_ANIMATION | (_direction == DIR_LEFT ? Sprite::FLAG_FLIP_X : 0));
 
     if(joy_right) {
         _position_x += WALK_SPEED * game_speed;

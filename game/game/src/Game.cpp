@@ -22,7 +22,7 @@ void Game::gameLoop() {
     InputController *inputController = new InputController();
 
     _player = new Player(graphics, inputController, 0);
-    _player->setPosition(100, 100);
+    _player->setPosition(120, 200);
 
     long time_accumulator = 0;
     float game_speed = 1.0f;
@@ -71,6 +71,9 @@ void Game::gameLoop() {
 
 void Game::draw(Graphics &graphics) {
     graphics.clear(40, 150, 70, 255);
+    SDL_SetRenderDrawColor(graphics.getRenderer(), 0,0,0,255);
+    SDL_RenderDrawLine(graphics.getRenderer(), 0, 200, 500, 200);
+    SDL_RenderDrawLine(graphics.getRenderer(), 120, 0, 120, 200);
 
     _player->draw(graphics);
 

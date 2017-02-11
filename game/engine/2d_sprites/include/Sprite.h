@@ -7,10 +7,10 @@
 #include <SDL2/SDL.h>
 
 class Sprite {
+    static const bool DEBUG_ON = true;
 
 public:
     static const int FLAG_FLIP_X = 1;
-    static const int FLAG_FLIP_Y = 2;
     static const int FLAG_LOOP_ANIMATION = 16;
 
     Sprite(FramesStore *framesStore);
@@ -42,11 +42,13 @@ private:
     float _animation_frame_delay;
     bool _animating;
 
-    void setAnimationFrame(Uint8 frame_index);
+    void _setAnimationFrame(Uint8 frame_index);
 
-    void nextAnimationFrame();
+    void _nextAnimationFrame();
 
-    void skipToLastAnimationFrame();
+    void _skipToLastAnimationFrame();
 
-    void updateCollisionBoxes();
+    void _updateCollisionBoxes();
+
+    void _drawFrame(Graphics &graphics, Frame &frame, int dest_x, int dest_y, Uint16 flags);
 };

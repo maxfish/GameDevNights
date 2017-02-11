@@ -5,7 +5,6 @@ Sprite::Sprite(FramesStore *framesStore) {
     _position.x = _position.y = 0;
     _flags = 0;
 
-
     _attack_box = SDL_Rect();
     _hit_box = SDL_Rect();
 
@@ -22,15 +21,45 @@ Sprite::~Sprite() {
 }
 
 void Sprite::update(float game_speed) {
-    updateCollisionBoxes();
+    _updateCollisionBoxes();
     if (!_animating) {
         return;
     }
     if (_animation_frame_delay <= 0) {
-        nextAnimationFrame();
+        _nextAnimationFrame();
         return;
     } else {
         _animation_frame_delay -= game_speed;
+    }
+}
+
+void Sprite::_drawFrame(Graphics &graphics, Frame &frame, int dest_x, int dest_y, Uint16 flags) {
+    SDL_Rect source_rect = frame.getRect();
+    SDL_Point anchor = frame.getAnchor();
+    SDL_RendererFlip flipFlags = SDL_FLIP_NONE;
+    float destination_angle = 0;
+
+    int anchor_x = frame.getAnchor().x;
+    // If flip_x is enabled, the anchor needs to be adjusted
+    if ((flags & Sprite::FLAG_FLIP_X) > 0) {
+        anchor_x = source_rect.w - anchor_x;
+        flipFlags = SDL_FLIP_HORIZONTAL;
+    }
+
+    SDL_Rect destination_rect = {dest_x - anchor_x, dest_y - anchor.y, source_rect.w, source_rect.h};
+
+    SDL_RenderCopyEx(graphics.getRenderer(),
+                     frame.getImage(),
+                     &source_rect,
+                     &destination_rect,
+                     destination_angle,
+                     &anchor,
+                     flipFlags
+    );
+
+    if (DEBUG_ON) {
+        SDL_SetRenderDrawColor(graphics.getRenderer(), 0, 0, 0, 255);
+        SDL_RenderDrawRect(graphics.getRenderer(), &destination_rect);
     }
 }
 
@@ -45,21 +74,17 @@ void Sprite::draw(Graphics &graphics) {
     if (animation_frame.getFlipX()) {
         flags |= FLAG_FLIP_X;
     }
-    if (animation_frame.getFlipY()) {
-        flags |= FLAG_FLIP_Y;
+
+    _drawFrame(graphics, *_frame, _position.x, _position.y, flags);
+
+    // DEBUG boxes
+    if (DEBUG_ON) {
+
+//        if self.hit_box and self.hit_box.w > 0 and self.hit_box.h > 0:
+//            pygame.draw.rect(surface, (0, 200, 0), self.hit_box.move(-window_x, -window_y), 1)
+//        if self.attack_box and self.attack_box.w > 0 and self.attack_box.h > 0:
+//            pygame.draw.rect(surface, (200, 0, 0), self.attack_box.move(-window_x, -window_y), 1)
     }
-
-    int dest_x = _position.x; // TODO: window offset
-    int dest_y = _position.y; // TODO: window offset
-
-    _framesStore->drawFrame(graphics, *_frame, dest_x, dest_y, flags);
-
-//        # DEBUG boxes
-//        if Sprite.DEBUG:
-//            if self.hit_box and self.hit_box.w > 0 and self.hit_box.h > 0:
-//                pygame.draw.rect(surface, (0, 200, 0), self.hit_box.move(-window_x, -window_y), 1)
-//            if self.attack_box and self.attack_box.w > 0 and self.attack_box.h > 0:
-//                pygame.draw.rect(surface, (200, 0, 0), self.attack_box.move(-window_x, -window_y), 1)
 }
 
 void Sprite::setPosition(int x, int y) {
@@ -76,7 +101,7 @@ void Sprite::playAnimation(std::string animation_name, Uint16 flags = 0) {
     _animating = true;
     _animation_name = animation_name;
     _flags = flags;
-    setAnimationFrame(0);
+    _setAnimationFrame(0);
 }
 
 void Sprite::stopAnimation() {
@@ -85,7 +110,7 @@ void Sprite::stopAnimation() {
     _animating = false;
 }
 
-void Sprite::setAnimationFrame(Uint8 frame_index) {
+void Sprite::_setAnimationFrame(Uint8 frame_index) {
     _animation = _framesStore->getAnimation(_animation_name);
     _animation_frame_index = frame_index;
     AnimationFrame *new_frame = _animation->getFrame(frame_index);
@@ -93,8 +118,8 @@ void Sprite::setAnimationFrame(Uint8 frame_index) {
     _frame = _framesStore->getFrame(new_frame->getFrameName());
 }
 
-void Sprite::nextAnimationFrame() {
-    Uint8 new_animation_frame_index = (Uint8) (_animation_frame_index + 1);
+void Sprite::_nextAnimationFrame() {
+    Uint8 new_animation_frame_index = Uint8(_animation_frame_index + 1);
     if (new_animation_frame_index > _animation->getFramesCount() - 1) {
         if ((_flags & FLAG_LOOP_ANIMATION) == 0) {
             _animating = false;
@@ -103,19 +128,19 @@ void Sprite::nextAnimationFrame() {
             new_animation_frame_index = 0;
         }
     }
-    setAnimationFrame(new_animation_frame_index);
+    _setAnimationFrame(new_animation_frame_index);
 }
 
-void Sprite::skipToLastAnimationFrame() {
+void Sprite::_skipToLastAnimationFrame() {
     if (!_animating) {
         return;
     }
 
     _animating = false;
-    setAnimationFrame((Uint8) (_animation->getFramesCount() - 1));
+    _setAnimationFrame(Uint8(_animation->getFramesCount() - 1));
 }
 
-void Sprite::updateCollisionBoxes() {
+void Sprite::_updateCollisionBoxes() {
 //        # TODO: flip_y should be handled as well
 //        animation_frame = self.animation.frames[self.animation_frame_index]
 //        flip_x = ((self.flags & FramesStore.FLAG_FLIP_X) > 0) ^ animation_frame.flip_x

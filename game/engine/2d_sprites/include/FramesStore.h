@@ -13,9 +13,6 @@
 class FramesStore {
 public:
     static const int DEFAULT_FPS = 25;
-    static const int FLAG_FLIP_X = 1;
-    static const int FLAG_FLIP_Y = 2;
-    static const int FLAG_LOOP_ANIMATION = 16;
 
     FramesStore(Graphics &graphics);
 
@@ -27,7 +24,7 @@ public:
 
     Frame *getFrame(std::string frame_name);
 
-    void drawFrame(Graphics &graphics, Frame &frame, int dest_x, int dest_y, Uint16 flags);
+//    void drawFrame(Graphics &graphics, Frame &frame, int dest_x, int dest_y, Uint16 flags);
 
 private:
     Graphics *_graphics;
