@@ -1,7 +1,7 @@
 #include <engine/2d_sprites/include/Sprite.h>
 
-Sprite::Sprite(FramesStore *framesStore) {
-    _framesStore = framesStore;
+Sprite::Sprite(FramesStore *frames_store) {
+    _frames_store = frames_store;
     _position.x = _position.y = 0;
     _flags = 0;
 
@@ -21,12 +21,17 @@ Sprite::~Sprite() {
 }
 
 void Sprite::update(float game_speed) {
-    _updateCollisionBoxes();
     if (!_animating) {
         return;
     }
+
+    if (_blink_enabled) {
+        _blink_counter += game_speed;
+    }
+
     if (_animation_frame_delay <= 0) {
         _nextAnimationFrame();
+        _updateCollisionBoxes();
         return;
     } else {
         _animation_frame_delay -= game_speed;
@@ -34,6 +39,7 @@ void Sprite::update(float game_speed) {
 }
 
 void Sprite::_drawFrame(Graphics &graphics, Frame &frame, int dest_x, int dest_y, Uint16 flags) {
+    SDL_Texture *texture = frame.getImage();
     SDL_Rect source_rect = frame.getRect();
     SDL_Point anchor = frame.getAnchor();
     SDL_RendererFlip flipFlags = SDL_FLIP_NONE;
@@ -48,8 +54,9 @@ void Sprite::_drawFrame(Graphics &graphics, Frame &frame, int dest_x, int dest_y
 
     SDL_Rect destination_rect = {dest_x - anchor_x, dest_y - anchor.y, source_rect.w, source_rect.h};
 
+    SDL_SetTextureAlphaMod(texture, _alpha);
     SDL_RenderCopyEx(graphics.getRenderer(),
-                     frame.getImage(),
+                     texture,
                      &source_rect,
                      &destination_rect,
                      destination_angle,
@@ -68,6 +75,11 @@ void Sprite::draw(Graphics &graphics) {
         return;
     }
 
+    if (_blink_enabled && _blink_counter>=_blink_frequency) {
+        _blink_counter = 0;
+        return;
+    }
+
     Uint16 flags = _flags;
     AnimationFrame animation_frame = *_animation->getFrame(_animation_frame_index);
     // Override animation flip if the frame is also flipped
@@ -79,7 +91,6 @@ void Sprite::draw(Graphics &graphics) {
 
     // DEBUG boxes
     if (DEBUG_ON) {
-
 //        if self.hit_box and self.hit_box.w > 0 and self.hit_box.h > 0:
 //            pygame.draw.rect(surface, (0, 200, 0), self.hit_box.move(-window_x, -window_y), 1)
 //        if self.attack_box and self.attack_box.w > 0 and self.attack_box.h > 0:
@@ -110,12 +121,27 @@ void Sprite::stopAnimation() {
     _animating = false;
 }
 
+void Sprite::startBlinking(float frequency) {
+    _blink_frequency = frequency;
+    _blink_counter = 0;
+    _blink_enabled = true;
+}
+
+void Sprite::stopBlinking() {
+    _blink_enabled = false;
+}
+
+void Sprite::setAlpha(Uint8 alpha) {
+    _alpha = alpha;
+}
+
+
 void Sprite::_setAnimationFrame(Uint8 frame_index) {
-    _animation = _framesStore->getAnimation(_animation_name);
+    _animation = _frames_store->getAnimation(_animation_name);
     _animation_frame_index = frame_index;
     AnimationFrame *new_frame = _animation->getFrame(frame_index);
     _animation_frame_delay = (Uint8) new_frame->getDelay();
-    _frame = _framesStore->getFrame(new_frame->getFrameName());
+    _frame = _frames_store->getFrame(new_frame->getFrameName());
 }
 
 void Sprite::_nextAnimationFrame() {
