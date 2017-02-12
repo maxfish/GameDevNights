@@ -3,10 +3,12 @@
 #include "game/include/Game.h"
 #include "engine/input/include/Keyboard.h"
 #include "globals.h"
+#include "engine/2d_map/include/Map.h"
 
 Game::Game() {
     SDL_Init(SDL_INIT_EVERYTHING);
     this->_eventsManager = new EventsManager();
+
     this->gameLoop();
 }
 
@@ -20,6 +22,9 @@ void Game::gameLoop() {
     SDL_Event event;
 
     InputController *inputController = new InputController();
+
+    _map = new Map(graphics);
+    _map->loadFromJSON("resources/maps", "test.json");
 
     _player = new Player(graphics, inputController, 0);
     _player->setPosition(120, 200);
@@ -71,9 +76,11 @@ void Game::gameLoop() {
 
 void Game::draw(Graphics &graphics) {
     graphics.clear(40, 150, 70, 255);
+    _map->draw();
+
     SDL_SetRenderDrawColor(graphics.getRenderer(), 0,0,0,255);
-    SDL_RenderDrawLine(graphics.getRenderer(), 0, 200, 500, 200);
-    SDL_RenderDrawLine(graphics.getRenderer(), 120, 0, 120, 200);
+//    SDL_RenderDrawLine(graphics.getRenderer(), 0, 200, 500, 200);
+//    SDL_RenderDrawLine(graphics.getRenderer(), 120, 0, 120, 200);
 
     _player->draw(graphics);
 

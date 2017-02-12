@@ -17,6 +17,8 @@ public:
 
     SDL_Texture *loadImage(const std::string &filePath);
 
+    SDL_Texture *loadTexture(const std::string &filePath);
+
     void blitTexture(SDL_Texture *texture, SDL_Rect *sourceRectangle,
                      SDL_Rect *destinationRectangle);
 

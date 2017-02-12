@@ -24,6 +24,16 @@ SDL_Texture *Graphics::loadImage(const std::string &filePath) {
     return _textures[filePath];
 }
 
+SDL_Texture *Graphics::loadTexture(const std::string &filePath) {
+    auto texture = IMG_LoadTexture(_renderer, filePath.c_str());
+    if (texture == nullptr) {
+        SDL_Log("Cannot load texture '%s'!", filePath.c_str());
+    } else {
+        SDL_Log("Texture '%s' loaded.", filePath.c_str());
+    }
+    return texture;
+}
+
 void Graphics::blitTexture(SDL_Texture *texture, SDL_Rect *sourceRectangle,
                            SDL_Rect *destinationRectangle) {
 
