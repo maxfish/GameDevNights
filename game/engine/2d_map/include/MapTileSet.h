@@ -13,6 +13,8 @@ class Map;
 class MapTileSet {
     friend class Map;
 
+    static const unsigned GID_MASK = 0x0FFFFFFF;
+
     static const unsigned FLAG_FLIPPED_HORIZONTALLY = 0x80000000;
     static const unsigned FLAG_FLIPPED_VERTICALLY = 0x40000000;
     static const unsigned FLAG_FLIPPED_DIAGONALLY = 0x20000000;

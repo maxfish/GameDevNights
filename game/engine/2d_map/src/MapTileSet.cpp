@@ -15,9 +15,7 @@ void MapTileSet::drawTile(Graphics *graphics, Uint32 gid, int x, int y) {
     bool flipped_diagonally = (bool) (gid & FLAG_FLIPPED_DIAGONALLY);
 
     // Clear the flags
-    gid &= ~(FLAG_FLIPPED_HORIZONTALLY |
-             FLAG_FLIPPED_VERTICALLY |
-             FLAG_FLIPPED_DIAGONALLY);
+    gid &= GID_MASK;
     Uint32 relative_index = gid - _first_gid;
 
     int tile_x = relative_index % _tiles_on_a_row;

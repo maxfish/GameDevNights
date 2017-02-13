@@ -48,7 +48,7 @@ void Map::draw() {
 
 MapTileSet *Map::tileSetFromGid(Uint32 global_index) {
     for (MapTileSet *tileSet : *_tile_sets) {
-        global_index &= 0xFFFFFFF;
+        global_index &= MapTileSet::GID_MASK;
         if (global_index >= tileSet->_first_gid && global_index < tileSet->_first_gid + tileSet->_tiles_count) {
             return tileSet;
         }
