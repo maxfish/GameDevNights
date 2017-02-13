@@ -87,7 +87,11 @@ void Game::draw(Graphics &graphics) {
     graphics.flip();
 }
 
+static int pos = 0;
+
 void Game::update(float game_speed) {
+    _map->setOffset({pos++/1000,0});
+
     _player->handleInput(game_speed);
     _player->update(game_speed);
 }

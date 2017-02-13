@@ -24,6 +24,14 @@ class Map {
 public:
     Map(Graphics &graphics);
 
+    void setViewport(SDL_Rect view_port);
+
+    SDL_Rect getViewport();
+
+    void setOffset(SDL_Point offset);
+
+    SDL_Point getOffset();
+
     Uint8 getTileWidth();
 
     Uint8 getTileHeight();
@@ -35,6 +43,9 @@ public:
     void loadFromJSON(string file_path, string file_name);
 
 protected:
+    SDL_Rect _viewport;
+    SDL_Point _offset;
+
     Uint16 _width;
     Uint16 _height;
     Uint8 _tile_width;

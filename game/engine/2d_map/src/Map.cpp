@@ -9,8 +9,27 @@
 
 Map::Map(Graphics &graphics) {
     _graphics = &graphics;
+
+    // The viewport defaults to the screen size
+    int w, h;
+    SDL_GetRendererOutputSize(_graphics->getRenderer(), &w, &h);
+    SDL_Rect viewport = {0, 0, w, h};
+    this->setViewport(viewport);
+}
+void Map::setViewport(SDL_Rect viewport) {
+    _viewport = viewport;
 }
 
+SDL_Rect Map::getViewport() {
+    return _viewport;
+}
+
+void Map::setOffset(SDL_Point offset) {
+    _offset = offset;
+}
+SDL_Point Map::getOffset() {
+    return _offset;
+}
 Uint8 Map::getTileWidth() {
     return _tile_width;
 }
@@ -20,9 +39,11 @@ Uint8 Map::getTileHeight() {
 }
 
 void Map::draw() {
+    SDL_RenderSetClipRect(_graphics->getRenderer(), &_viewport);
     for (MapLayer *layer : *_layers) {
         layer->draw(_graphics);
     }
+    SDL_RenderSetClipRect(_graphics->getRenderer(), NULL);
 }
 
 MapTileSet *Map::tileSetFromGid(Uint32 global_index) {
