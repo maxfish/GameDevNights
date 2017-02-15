@@ -20,7 +20,7 @@ void MapTileSet::drawTile(Graphics *graphics, Uint32 gid, int x, int y) {
 
     int tile_x = relative_index % _tiles_on_a_row;
     int tile_y = relative_index / _tiles_on_a_row;
-    SDL_Log("gid:%d x:%d y:%d", gid, tile_x, tile_y);
+//    SDL_Log("gid:%d x:%d y:%d", gid, tile_x, tile_y);
     SDL_Rect source_rect = {tile_x * _tile_width, tile_y * _tile_height, _tile_width, _tile_height};
     SDL_Rect dest_rect = {x, y, _tile_width, _tile_height};
     SDL_Point anchor = {_tile_width / 2, 0};
