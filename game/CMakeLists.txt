@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.6)
 project(GAME)
 
+include(ExternalProject)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 # Setup SDL2
@@ -16,10 +17,6 @@ include_directories(
         ${SDL2_TTF_INCLUDE_DIR}
 )
 
-# Setup Engine
-file(GLOB_RECURSE ENGINE_SRC "engine/*.cpp")
-file(GLOB_RECURSE ENGINE_INCLUDE "engine/*.h")
-
 # Setup Game
 include_directories(game/include)
 file(GLOB GAME_SRC game/src/*.cpp)
@@ -28,13 +25,24 @@ file(GLOB GAME_INCLUDES game/include/*.h)
 # Setup globals
 include_directories(.)
 
-# Add 3rd Parties
-include_directories(
-        third_parties/json
-)
+# Gojira library
+set(GOJIRA_SDL2_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}")
+ExternalProject_Add(gojira_sdl2
+        GIT_REPOSITORY https://github.com/maxfish/gojira-sdl2.git
+        INSTALL_DIR ${GOJIRA_SDL2_INSTALL_DIR}
+        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+        INSTALL_COMMAND ""
+        UPDATE_COMMAND ""
+        )
+file(GLOB_RECURSE GOJIRA_SDL2_LIBRARY "${GOJIRA_SDL2_INSTALL_DIR}/libgojira_sdl2.a")
+ExternalProject_Get_Property(gojira_sdl2 source_dir)
+include_directories(${source_dir})
 
 # Build library
-add_executable(GAME main.cpp ${ENGINE_SRC} ${ENGINE_INCLUDES} ${GAME_SRC} ${GAME_INCLUDES})
+add_executable(GAME main.cpp ${ENGINE_INCLUDES} ${GAME_SRC} ${GAME_INCLUDES})
+add_dependencies(GAME gojira_sdl2)
 target_link_libraries(GAME ${SDL2_LIBRARY}
         ${SDL2_IMAGE_LIBRARIES}
-        ${SDL2_TTF_LIBRARIES})
+        ${SDL2_TTF_LIBRARIES}
+        ${GOJIRA_SDL2_LIBRARY}
+        )

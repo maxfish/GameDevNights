@@ -62,7 +62,7 @@ void Game::gameLoop() {
 //        time_accumulator += elapsed_time;
         if (elapsed_time >= globals::FRAME_TIME) {
             game_speed = elapsed_time / float(globals::FRAME_TIME);
-            SDL_Log("elapsed:%d speed:%f", elapsed_time, game_speed);
+//            SDL_Log("elapsed:%d speed:%f", elapsed_time, game_speed);
 //            time_accumulator -= globals::FRAME_TIME;
             this->update(game_speed);
             this->draw(graphics);
