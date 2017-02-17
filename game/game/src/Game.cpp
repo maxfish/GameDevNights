@@ -32,9 +32,8 @@ void Game::gameLoop() {
     long time_accumulator = 0;
     float game_speed = 1.0f;
 
+    long prev_time = SDL_GetTicks();
     while (true) {
-        auto start_time = SDL_GetTicks();
-
         input.beginNewFrame();
 
         if (SDL_PollEvent(&event)) {
@@ -59,18 +58,17 @@ void Game::gameLoop() {
             return;
         }
 
-        this->update(game_speed);
-
-        long elapsed_time = SDL_GetTicks() - start_time;
-        time_accumulator += elapsed_time;
-        game_speed = elapsed_time / float(globals::FRAME_TIME);
-
-        if (time_accumulator >= globals::FRAME_TIME) {
-            time_accumulator = 0;
+        long elapsed_time = SDL_GetTicks() - prev_time;
+//        time_accumulator += elapsed_time;
+        if (elapsed_time >= globals::FRAME_TIME) {
+            game_speed = elapsed_time / float(globals::FRAME_TIME);
+            SDL_Log("elapsed:%d speed:%f", elapsed_time, game_speed);
+//            time_accumulator -= globals::FRAME_TIME;
+            this->update(game_speed);
             this->draw(graphics);
+            this->_eventsManager->clear_events();
+            prev_time = SDL_GetTicks();
         }
-
-        this->_eventsManager->clear_events();
     }
 }
 
@@ -90,7 +88,8 @@ void Game::draw(Graphics &graphics) {
 static int pos = 0;
 
 void Game::update(float game_speed) {
-    _map->setOffset({pos++/1000,0});
+    pos += 1 * game_speed;
+    _map->setOffset({pos,0});
 
     _player->handleInput(game_speed);
     _player->update(game_speed);
