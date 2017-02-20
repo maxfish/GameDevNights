@@ -1,19 +1,22 @@
 #include <SDL2/SDL.h>
-#include <engine/input/include/InputController.h>
-#include "game/include/Game.h"
-#include "engine/input/include/Keyboard.h"
+#include <engine/input/InputController.h>
+#include <engine/core/Utils.hpp>
+#include "game/Game.h"
+#include "engine/input/Keyboard.h"
 #include "globals.h"
-#include "engine/2d_map/include/Map.h"
+#include "engine/2d_map/Map.h"
 
 Game::Game() {
     SDL_Init(SDL_INIT_EVERYTHING);
     this->_eventsManager = new EventsManager();
 
+//    b2World *world = new b2World(b2Vec2(0, 10));
+
     this->gameLoop();
 }
 
 Game::~Game() {
-
+    delete(this->_eventsManager);
 }
 
 void Game::gameLoop() {
@@ -25,6 +28,7 @@ void Game::gameLoop() {
 
     _map = new Map(graphics);
     _map->loadFromJSON("resources/maps", "test.json");
+    _map->setOffset({0,0});
 
     _player = new Player(graphics, inputController, 0);
     _player->setPosition(120, 200);
@@ -46,7 +50,7 @@ void Game::gameLoop() {
                 input.keyUpEvent(event);
             }//if the user hits the exit button
             else if (event.type == SDL_QUIT) {
-                return;
+                break;
             } else {
                 _eventsManager->add_frame_event(event);
             }
@@ -55,7 +59,7 @@ void Game::gameLoop() {
         inputController->process_frame_events(_eventsManager->get_frame_events());
 
         if (input.wasKeyPressed(SDL_SCANCODE_ESCAPE)) {
-            return;
+            break;
         }
 
         long elapsed_time = SDL_GetTicks() - prev_time;
@@ -70,6 +74,8 @@ void Game::gameLoop() {
             prev_time = SDL_GetTicks();
         }
     }
+
+    SDL_Quit();
 }
 
 void Game::draw(Graphics &graphics) {
@@ -88,8 +94,8 @@ void Game::draw(Graphics &graphics) {
 static int pos = 0;
 
 void Game::update(float game_speed) {
-    pos += 1 * game_speed;
-    _map->setOffset({pos,0});
+//    pos += 1 * game_speed;
+//    _map->setOffset({0,0});
 
     _player->handleInput(game_speed);
     _player->update(game_speed);

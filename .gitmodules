@@ -1,0 +1,3 @@
+[submodule "game/externals/gojira-sdl2"]
+	path = game/externals/gojira-sdl2
+	url = git@github.com:maxfish/gojira-sdl2.git

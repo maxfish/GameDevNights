@@ -1,9 +1,9 @@
 #pragma once
 
 #include <vector>
-#include <engine/core/include/EventsManager.h>
-#include <engine/2d_sprites/include/Sprite.h>
-#include <engine/2d_map/include/Map.h>
+#include <engine/core/EventsManager.h>
+#include <engine/2d_sprites/Sprite.h>
+#include <engine/2d_map/Map.h>
 #include "Player.h"
 
 class Graphics;

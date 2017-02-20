@@ -3,7 +3,7 @@
 //
 
 #include <globals.h>
-#include "Player.h"
+#include "game/Player.h"
 
 static const int WALK_SPEED = 2;
 
@@ -11,7 +11,10 @@ Player::Player(Graphics &graphics, InputController *inputController, int joystic
     Entity();
 
     _framesStore = new FramesStore(graphics);
-    _framesStore->load("resources/sprites/cody", "sprites.json");
+    _framesStore->load("resources/sprites/drako", "drako.json");
+
+    // Game FPS might be different from the ones expected by the animations
+    _speed_adjust = _framesStore->getAnimationsFPS() / (float)globals::FPS;
 
     _inputController = inputController;
     _joystick_index = joystick_index;
@@ -28,8 +31,10 @@ void Player::handleInput(float game_speed) {
         return;
     }
 
-    bool joy_right = joystick->isButtonDown(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) || joystick->getAxisValue(SDL_CONTROLLER_AXIS_LEFTX) > 0.5;
-    bool joy_left = joystick->isButtonDown(SDL_CONTROLLER_BUTTON_DPAD_LEFT) || joystick->getAxisValue(SDL_CONTROLLER_AXIS_LEFTX) < -0.5;
+    bool joy_right = joystick->isButtonDown(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) ||
+                     joystick->getAxisValue(SDL_CONTROLLER_AXIS_LEFTX) > 0.5;
+    bool joy_left = joystick->isButtonDown(SDL_CONTROLLER_BUTTON_DPAD_LEFT) ||
+                    joystick->getAxisValue(SDL_CONTROLLER_AXIS_LEFTX) < -0.5;
 
     if (joy_left) {
         _direction = DIR_LEFT;
@@ -39,10 +44,10 @@ void Player::handleInput(float game_speed) {
 
     Uint16 flags = (Uint16) (Sprite::FLAG_LOOP_ANIMATION | (_direction == DIR_LEFT ? Sprite::FLAG_FLIP_X : 0));
 
-    if(joy_right) {
+    if (joy_right) {
         _position_x += WALK_SPEED * game_speed;
         _sprite->playAnimation("walk", flags);
-    } else if(joy_left) {
+    } else if (joy_left) {
         _position_x -= WALK_SPEED * game_speed;
         _sprite->playAnimation("walk", flags);
     } else {
@@ -52,7 +57,7 @@ void Player::handleInput(float game_speed) {
 
 void Player::update(float gameSpeed) {
     _sprite->setPosition((int) _position_x, (int) _position_y);
-    _sprite->update(gameSpeed);
+    _sprite->update(gameSpeed * _speed_adjust);
 }
 
 void Player::draw(Graphics &graphics) {

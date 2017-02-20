@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "fps": 20
+  },
+  "animations": {
+    "jump": {
+      "frames": [
+        {
+          "frame": "walk.1"
+        }
+      ]
+    },
+    "stand": {
+      "frames": [
+        {
+          "frame": "stand.0"
+        }
+      ]
+    },
+    "walk": {
+      "frames": [
+        {
+          "frame": "walk.0"
+        },
+        {
+          "frame": "stand.0"
+        },
+        {
+          "frame": "walk.1"
+        }
+      ]
+    }
+  },
+  "frames": {
+    "stand.0": {
+      "anchor": {
+        "x": 14,
+        "y": 37
+      },
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 32,
+        "height": 38
+      },
+      "image_file": "frames.png"
+    },
+    "walk.0": {
+      "anchor": {
+        "x": 14,
+        "y": 37
+      },
+      "rect": {
+        "x": 33,
+        "y": 0,
+        "width": 32,
+        "height": 38
+      },
+      "image_file": "frames.png"
+    },
+    "walk.1": {
+      "anchor": {
+        "x": 14,
+        "y": 37
+      },
+      "rect": {
+        "x": 66,
+        "y": 0,
+        "width": 31,
+        "height": 38
+      },
+      "image_file": "frames.png"
+    }
+  }
+}

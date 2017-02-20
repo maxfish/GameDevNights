@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include <engine/2d_sprites/include/Sprite.h>
-#include <engine/entities/include/Entity.h>
-#include <engine/input/include/Joystick.h>
-#include <engine/input/include/InputController.h>
+#include <engine/2d_sprites/Sprite.h>
+#include <engine/entities/Entity.h>
+#include <engine/input/Joystick.h>
+#include <engine/input/InputController.h>
 
 
 class Player : public Entity {
@@ -28,6 +28,7 @@ private:
 
     FramesStore *_framesStore;
     Sprite *_sprite;
+    float _speed_adjust;
 
     InputController *_inputController;
     int _joystick_index;
