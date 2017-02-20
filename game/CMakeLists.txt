@@ -32,9 +32,9 @@ include_directories(${LIB_GOJIRA_SDL2_DIR})
 file(GLOB_RECURSE GOJIRA_SDL2_SRC "${LIB_GOJIRA_SDL2_DIR}/*.cpp")
 
 # Setup Game
-include_directories(game/include)
-file(GLOB GAME_SRC game/src/*.cpp)
-file(GLOB GAME_INCLUDES game/include/*.h)
+include_directories(game)
+file(GLOB GAME_SRC game/*.cpp)
+file(GLOB GAME_INCLUDES game/*.h)
 
 # Build the game
 add_executable(GAME main.cpp ${ENGINE_INCLUDES} ${GAME_SRC} ${GAME_INCLUDES} ${GOJIRA_SDL2_SRC})
