@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <engine/input/InputController.h>
 #include <engine/core/Utils.hpp>
+#include <externals/box2d/Box2D/Box2D/Dynamics/b2World.h>
 #include "game/Game.h"
 #include "engine/input/Keyboard.h"
 #include "globals.h"
@@ -10,8 +11,7 @@ Game::Game() {
     SDL_Init(SDL_INIT_EVERYTHING);
     this->_eventsManager = new EventsManager();
 
-//    b2World *world = new b2World(b2Vec2(0, 10));
-
+    b2World *world = new b2World(b2Vec2(float32(0), float32(10)));
     this->gameLoop();
 }
 
