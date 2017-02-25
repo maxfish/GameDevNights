@@ -70,9 +70,9 @@ void Game::gameLoop() {
 //            time_accumulator -= globals::FRAME_TIME;
             this->update(game_speed);
             this->draw(graphics);
-            this->_eventsManager->clear_events();
             prev_time = SDL_GetTicks();
         }
+        this->_eventsManager->clear_events();
     }
 
     SDL_Quit();
