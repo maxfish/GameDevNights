@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <engine/2d_sprites/Sprite.h>
+#include <engine/2d_sprites/bitmap/Sprite.h>
 #include <engine/entities/Entity.h>
 #include <engine/input/Joystick.h>
 #include <engine/input/InputController.h>

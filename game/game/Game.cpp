@@ -2,10 +2,8 @@
 #include <engine/input/InputController.h>
 #include <engine/core/Utils.hpp>
 #include <externals/box2d/Box2D/Box2D/Dynamics/b2World.h>
-#include "game/Game.h"
+#include "Game.h"
 #include "engine/input/Keyboard.h"
-#include "globals.h"
-#include "engine/2d_map/Map.h"
 
 Game::Game() {
     SDL_Init(SDL_INIT_EVERYTHING);
@@ -20,7 +18,7 @@ Game::~Game() {
 }
 
 void Game::gameLoop() {
-    Graphics graphics = Graphics("Game", globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT);
+    Graphics graphics = Graphics("Game", SCREEN_WIDTH, SCREEN_HEIGHT);
     Keyboard input;
     SDL_Event event;
 
@@ -64,8 +62,8 @@ void Game::gameLoop() {
 
         long elapsed_time = SDL_GetTicks() - prev_time;
 //        time_accumulator += elapsed_time;
-        if (elapsed_time >= globals::FRAME_TIME) {
-            game_speed = elapsed_time / float(globals::FRAME_TIME);
+        if (elapsed_time >= Game::FRAME_TIME) {
+            game_speed = elapsed_time / float(Game::FRAME_TIME);
 //            SDL_Log("elapsed:%d speed:%f", elapsed_time, game_speed);
 //            time_accumulator -= globals::FRAME_TIME;
             this->update(game_speed);

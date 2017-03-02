@@ -2,8 +2,8 @@
 // Created by max on 05/02/17.
 //
 
-#include <globals.h>
-#include "game/Player.h"
+#include "Player.h"
+#include "Game.h"
 
 static const int WALK_SPEED = 2;
 
@@ -14,7 +14,7 @@ Player::Player(Graphics &graphics, InputController *inputController, int joystic
     _framesStore->load("resources/sprites/drako", "drako.json");
 
     // Game FPS might be different from the ones expected by the animations
-    _speed_adjust = _framesStore->getAnimationsFPS() / (float)globals::FPS;
+    _speed_adjust = _framesStore->getAnimationsFPS() / (float)Game::FPS;
 
     _inputController = inputController;
     _joystick_index = joystick_index;
