@@ -4,32 +4,49 @@
 #include <externals/box2d/Box2D/Box2D/Dynamics/b2World.h>
 #include "Game.h"
 #include "engine/input/Keyboard.h"
+#include "physics/ContactListener.h"
 
 Game::Game() {
     SDL_Init(SDL_INIT_EVERYTHING);
     this->_eventsManager = new EventsManager();
+    _graphics = new Graphics("Game", SCREEN_WIDTH, SCREEN_HEIGHT);
+    _world = new World(_graphics, SCREEN_WIDTH, SCREEN_HEIGHT, b2Vec2(float32(0), -float32(10)));
 
-    b2World *world = new b2World(b2Vec2(float32(0), float32(10)));
+    _world->createEdge(b2Vec2(-400,SCREEN_HEIGHT-2), b2Vec2(SCREEN_WIDTH +400, SCREEN_HEIGHT-2));
+//    _world->createBox(SCREEN_WIDTH/2, 300, SCREEN_WIDTH, 30, -0.6, false);
+    _world->createBox(0, 200, 200, 20, -0.5, 1, false);
+    _world->createBox(0, 400, 300, 20, -0.1, 1, false);
+    _world->createBox(100, 10, 40, 40, 0, 3, true);
+    _world->createBox(450, 10, 30, 30, 0, 12, true);
+
+    _world->createBox(605, 330, 40, 40, 0, 6, true);
+    _world->createBox(600, 390, 20, 20, 0, 6, true);
+
+    b2ContactListener *contactListener = new ContactListener();
+    _world->getB2World()->SetContactListener(contactListener);
+
     this->gameLoop();
 }
 
 Game::~Game() {
-    delete(this->_eventsManager);
+    delete(_eventsManager);
+    delete(_world);
+    delete(_graphics);
 }
 
 void Game::gameLoop() {
-    Graphics graphics = Graphics("Game", SCREEN_WIDTH, SCREEN_HEIGHT);
     Keyboard input;
     SDL_Event event;
 
     InputController *inputController = new InputController();
 
+    Graphics graphics = *_graphics;
     _map = new Map(graphics);
     _map->loadFromJSON("resources/maps", "test.json");
     _map->setOffset({0,0});
 
-    _player = new Player(graphics, inputController, 0);
-    _player->setPosition(120, 200);
+    _player = new Player(graphics, _world, inputController, 0);
+    _player->setPosition(100, 200);
 
     long time_accumulator = 0;
     float game_speed = 1.0f;
@@ -78,13 +95,14 @@ void Game::gameLoop() {
 
 void Game::draw(Graphics &graphics) {
     graphics.clear(40, 150, 70, 255);
-    _map->draw();
+//    _map->draw();
 
-    SDL_SetRenderDrawColor(graphics.getRenderer(), 0,0,0,255);
+//    SDL_SetRenderDrawColor(graphics.getRenderer(), 0,0,0,255);
 //    SDL_RenderDrawLine(graphics.getRenderer(), 0, 200, 500, 200);
 //    SDL_RenderDrawLine(graphics.getRenderer(), 120, 0, 120, 200);
 
     _player->draw(graphics);
+    _world->debugDraw();
 
     graphics.flip();
 }
@@ -95,7 +113,12 @@ void Game::update(float game_speed) {
 //    pos += 1 * game_speed;
 //    _map->setOffset({0,0});
 
-    _player->handleInput(game_speed);
+//    _world->Step(1,6,2);
+//    _world->Step(0.4, 8, 3);
+    float32 timeStep = game_speed*FRAME_TIME;
+    _world->step(0.05);
+
+    _player->handleInput(0.001);
     _player->update(game_speed);
 }
 

@@ -20,6 +20,7 @@ include_directories(
 ################################################################
 # External libraries                                           #
 ################################################################
+# NOTE: There must be a better way of doing this... I'm not a CMake expert
 set(GOJIRA_SDL2_DIR "externals/gojira-sdl2")
 add_subdirectory(${GOJIRA_SDL2_DIR})
 include_directories(${GOJIRA_SDL2_DIR})
@@ -28,13 +29,15 @@ file(GLOB_RECURSE GOJIRA_SDL2_SRC
         "${GOJIRA_SDL2_DIR}/externals/SpriterPlusPlus/spriterengine/*.cpp"
         "${GOJIRA_SDL2_DIR}/externals/box2d/Box2D/Box2D/*.cpp"
         )
-include_directories(${GOJIRA_SDL2_DIR}/externals/box2d/Box2D)
 include_directories(${GOJIRA_SDL2_DIR}/externals/SpriterPlusPlus)
 include_directories(${GOJIRA_SDL2_DIR}/third_parties)
 
+#add_subdirectory(externals/box2d/Box2D)
+include_directories(externals/box2d/Box2D)
+
 # Setup Game
 include_directories(./game)
-file(GLOB GAME_SRC game/*.cpp)
+file(GLOB GAME_SRC game/*.cpp game/entities/*.cpp game/physics/*.cpp game/player/*.cpp)
 
 # Build the game
 add_executable(GAME main.cpp ${ENGINE_INCLUDES} ${GAME_SRC} ${GOJIRA_SDL2_SRC})
